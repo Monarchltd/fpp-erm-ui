@@ -1,0 +1,233 @@
+﻿
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"></script>
+
+<style>
+    .tableFixHead {
+        overflow: auto;
+        height: 100px;
+    }
+
+        .tableFixHead thead th {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+    /* Just common table stuff. Really. */
+    table {
+        border - collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        padding: 8px 16px;
+    }
+
+    th {
+        background: #eee;
+    }
+
+    h6 {
+        width: 100%;
+        text-align: center;
+        border-bottom: 1px solid #000;
+        line-height: 0.1em;
+    }
+
+        h6 span {
+            background: #fff;
+            padding: 0 10px;
+        }
+</style>
+
+<main aria-labelledby="title">
+    <div class="card text-left">
+        <div class="card-header">
+            <h5 class="card-title">Send Email</h5>
+            Tender Id: <font color="brown">@ViewBag.id</font>
+        </div>
+        <div class="card-body">
+            <div id="completed" class="container tab-pane active">
+                @{
+                    if (ViewBag.MailSent == false)
+                    {
+                        <button type="button" class="btn btn-warning btn-sm">@Html.ActionLink("Send Email", "SendMail", "Send", new { area = "" }, new { @class = "nav-link" })</button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-success btn-sm">Email Sent</button>
+                    }
+                }
+
+                <br />
+                <br>
+                Dear Sir/Madam,
+                <br />
+                @{
+                    foreach (var itm in @ViewBag.Result.ermSuppliers)
+                    {
+                        <label style="color:blue">@itm.InvitationToTender</label>
+                    }
+                }
+                <br /><br />
+                Company number : @ViewBag.Result.ermTender.comp_reg
+                <br /><br />
+                Price Under @ViewBag.Result.ermTender.fillers
+                <br /><br />
+                EIC partnership has been appointed by Futures to assist with its energy procurement requirements. You have been invited to participate in this mini-competition <br />
+                for the provision of @ViewBag.Result.ermRequirements.EnergyType supplies under Lot @ViewBag.Sitecount within the DPS agreement referenced above.
+                <br /><br />
+                <b>Requirements:</b>
+                <br />
+                For the sites listed in the attached schedule please provide quotations for supply including the following options:
+                <br />
+                <br />
+
+                <div class="row">
+                    <div class="col">
+                        Payment term(s):
+                    </div>
+                    <div class="col">
+                        @ViewBag.Result.ermRequirements.PaymentTerms
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        Payment duration(s):
+                    </div>
+                    <div class="col">
+                        @ViewBag.Result.ermRequirements.ContractDuration days
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        Energy type(s):
+                    </div>
+                    <div class="col">
+                        @ViewBag.fueltype
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        Contract type(s):
+                    </div>
+                    <div class="col">
+                        Fully Fixed including all pass through charges
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        Contract Start Date:
+                    </div>
+                    <div class="col">
+                        @ViewBag.Result.ermRequirements.Contract_startdate
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        Contract Duration(s):
+                    </div>
+                    <div class="col">
+                        End Date @ViewBag.Result.ermRequirements.Contract_enddate
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        Included commission:
+                    </div>
+                    <div class="col">
+                        @ViewBag.Result.ermRequirements.IncludedCommission
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        Micro Business:
+                    </div>
+                    <div class="col">
+                        No
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        DC/DA Agent (HH, P272 and AMR):
+                    </div>
+                    <div class="col">
+                        Stark (supplier nomination)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        Billing
+                    </div>
+                    <div class="col">
+                        Original paper invoices to be sent to EIC partnership   Head Office.<br />
+                        E-bills to be emailed to <label style="color:blue">e.billing@eic.co.uk</label> <br />
+                        Online access to copy invoices to be provided to EIC partnership.
+                    </div>
+                </div>
+                <br />
+                <b>Can you please supply EAC and Take or Pay conditions, when supplying your prices.</b>
+                <br /><br />
+                <b>Please confirm that you can register and support smets2 meters also Targeted Charging Review (TCR) is included in this quote.</b>
+                <br /><br />
+                <b>Submission</b>
+                <br />
+                <div class="row">
+                    <div class="col">
+                        Tenders should be emailed to:
+                    </div>
+                    <div class="col">
+                        EnergyTendersTeam@eic.co.uk
+                    </div>
+                </div>
+                <div class="row z-1">
+                    <div class="col">
+                        Submission deadline:
+                    </div>
+                    <div class="col">
+                        @ViewBag.Result.ermRequirements.Submission_deadline
+                    </div>
+                </div>
+                <br />
+                Please include your latest terms and conditions and ensure that you provide your most competitive price as you may not get another opportunity to re-tender. All submissions <br />
+                including re-quotes must comply with the requirements in this ITT, any variations made by EIC partnership   will be confirmed in writing only. Any late, incomplete, incorrect <br />
+                or non-confirming tenders may be disqualified by EIC partnership   without further notice.<br />
+                <br />
+                By submitting an offer for this ITT you agree that your submission is bona-fide, correct and complies with the requirement. The requirement within this ITT will prevail over <br />
+                any supply terms and conditions provided unless non-conformances are clearly highlighted and accepted in writing by EIC partnership.<br />
+                <br /><br />
+                Attachements :-
+                <br />
+                @{
+                    foreach (var itm in ViewBag.Result.ermUploads)
+                    {
+                        <div class="row">
+                            <div>
+                                <a href="https://localhost:44389/Uploads/@itm.tenderref/@itm.upload_file" style="color:blue" download>@itm.upload_file</a>
+                            </div>
+                        </div>
+                    }
+                }
+                <br />
+                Kind regards,
+            </div>
+
+        </div>
+        </div>
+        <div class="card-footer text-muted">
+        </div>
+    
+
+    <script type="text/javascript">
+
+    </script>
+</main>

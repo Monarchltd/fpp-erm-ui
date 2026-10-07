@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixed Pricing Portal</title>
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <style>
+        /* Add custom styles for the container */
+        .container {
+            align-items: flex-start; /* Align items at the top */
+            gap: 10px; /* Space between the two containers */
+            padding: 5px; /* Added padding to increase container size */
+            margin: 0 auto; /* Center the container horizontally */
+            max-width: 98%; /* Ensure it doesn't exceed the viewport width */
+        }
+    </style>
+
+    <nav class="navbar navbar-expand-lg navbar-toggleable-sm navbar-dark bg-info">
+        <div class="container">
+            <div class="text-dark">
+                @Html.ActionLink("ERM", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    @*<li>@Html.ActionLink("Dashboard", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                <li>@Html.ActionLink("New Tender", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>*@
+                    <li>@Html.ActionLink("Logout", "Login", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                </ul>
+            </div>
+            <label>@ViewBag.Username</label>
+            <input type="hidden" name="username" value=@ViewBag.Username />
+        </div>
+    </nav>
+    <div class="container body-content">
+
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Powered by Monarch Partnership Ltd.</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

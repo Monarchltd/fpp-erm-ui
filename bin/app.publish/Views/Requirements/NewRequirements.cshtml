@@ -1,0 +1,434 @@
+﻿
+@{
+    ViewBag.Title = "New Tender";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+
+<style>
+    .tableFixHead {
+        overflow: auto;
+        height: 100px;
+    }
+
+        .tableFixHead thead th {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+    /* Just common table stuff. Really. */
+    table {
+        border - collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        padding: 8px 16px;
+    }
+
+    th {
+        background: #eee;
+    }
+</style>
+
+<main aria-labelledby="title">
+    
+    <div class="card text-left">
+        <div class="card-header">
+            <h5 class="card-title">New Tender</h5>
+            Tender Id: <font color="brown">@ViewBag.NewTender.id</font>
+        </div>
+        <div class="card-body">
+            <button type="button" class="btn btn-warning btn-sm">@Html.ActionLink("Cancel", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</button>
+            <br /> <br />
+            <!--Nav tabs -->
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link disabled">Upload</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled">Analysis</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#requirements">Requirements</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled">Completed</a>
+                </li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div id="upload" class="container tab-pane fade">
+                    <br>
+                </div>
+
+                <div id="analysis" class="container tab-pane fade">
+                    <br>
+                </div>
+
+                <div id="requirements" class="container tab-pane active">
+                    <br>
+                    @*@using (Html.BeginForm("NewRequirements", "Requirements", FormMethod.Post, new { enctype = "multipart/form-data", @class = "was-validated" }))*@
+                    @using (Html.BeginForm("CompletePage", "Complete", FormMethod.Post, new { enctype = "multipart/form-data", @class = "was-validated" }))
+                    {
+                        <input class="form-control form-control-sm" id="newReq" name="newReq" type="hidden">
+
+                        <div class="row">
+                            <div class="tableFixHead" style="height: 450px; overflow-x: auto;">
+                                <table class="table-sm mb-0 text-nowrap">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        @{
+                                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
+                                                                    @{ if (@ViewBag.SubmissionSuppliers != null) { if (ViewBag.SubmissionSuppliers.Count > 0) { @ViewBag.Disabled  } } }>
+                                                                Add Supplier +
+                                                            </button>
+                                                        }
+                                                    </div>
+                                                    <div class="col">
+                                                        @*<p style="color:orangered">** Note: Adding multiple supplier's' will create a independant Tender with unique ID.</p>*@
+                                                    </div>
+                                                    <div class="col">
+                                                    </div>
+                                                    <div class="col">
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="row" style="background-color:aliceblue">
+                                                    <div class="col">
+                                                        <input type="hidden" name="req_invitationtotender" value="@ViewBag.Invitationtotender" />
+                                                        <input type="hidden" name="req_supplieremail" value="@ViewBag.SupplierEmail" />
+                                                        <table class="table-responsive-lg table-sm table-hover">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th scope="col">Id</th>
+                                                                    <th scope="col">Supplier</th>
+                                                                    <th scope="col">Invitation to Tender</th>
+                                                                    <th scope="col">Email Id's</th>
+                                                                    <th scope="col">Actions</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @{
+                                                                    if (@ViewBag.SubmissionSuppliers != null)
+                                                                    {
+                                                                        foreach (var item in @ViewBag.SubmissionSuppliers)
+                                                                        {
+                                                                            <tr>
+                                                                                <td>@item.id</td>
+                                                                                <td>@item.supplier_name</td>
+                                                                                <td>@ViewBag.Invitationtotender</td>
+                                                                                <td>@ViewBag.SupplierEmail</td>
+                                                                                <td>
+                                                                                    <div>
+                                                                                        <button type="submit" data-toggle="tooltip" class="btn btn-danger" formaction="@Url.Action("NewRequirements", "Requirements", new { suppId = @item.id })"><span class="bi bi-trash-fill"></span></button>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+
+                                                                        }
+
+                                                                    }
+                                                                }
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <label for="formFileSm" class="form-label">Company Registration</label>
+                                                        <input class="form-control form-control-sm" type="text" name="req_companyreg" value="@ViewBag.companyreg" readonly required>
+                                                        <div class="invalid-feedback">Company registration, required !</div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <label for="formFileSm" class="form-label">Energy Type(s)</label>
+                                                        <select class="form-select" name="req_energytype" aria-label="Default select example">
+                                                            <option value="">Select</option>
+                                                            <option value="1" @{ if (ViewBag.req_energytype != null) { if (@ViewBag.req_energytype == "1") { @ViewBag.req_energytypeSel  ; } }}>Electric</option>
+                                                            <option value="2" @{ if (ViewBag.req_energytype != null) { if (@ViewBag.req_energytype == "2") { @ViewBag.req_energytypeSel  ; } }}>Gas</option>
+                                                            <option value="3" @{ if (ViewBag.req_energytype != null) { if (@ViewBag.req_energytype == "3") { @ViewBag.req_energytypeSel  ; } }}>Water</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col">
+                                                        <label for="formFileSm" class="form-label">Payment Terms (s)</label>
+                                                        <select class="form-select" name="req_paymentterms" aria-label="Default select example">
+                                                            <option value="">Select</option>
+                                                            <option value="1" @{ if (ViewBag.req_paymentterms != null) { if (@ViewBag.req_paymentterms == "1") { @ViewBag.req_paymenttermsSel  ; } }}>BACS</option>
+                                                            <option value="2" @{ if (ViewBag.req_paymentterms != null) { if (@ViewBag.req_paymentterms == "2") { @ViewBag.req_paymenttermsSel  ; } }}>DD</option>
+                                                        </select>
+                                                        <div class="invalid-feedback">Energy Type, required !</div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <label for="formFileSm" class="form-label">Contract Type (s)</label>
+                                                        <input class="form-control form-control-sm" name="req_contracttype" type="text" value="Fixed" readonly>
+                                                        <div class="invalid-feedback">Contract type, required !</div>
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <label for="formFileSm" class="form-label">Included Commission</label>
+                                                        <input class="form-control form-control-sm" name="req_includedcommission" type="text" value="@ViewBag.IncludeCommission" readonly>
+                                                    </div>
+                                                    <div class="col">
+                                                        <label for="formFileSm" class="form-label">Payment Duration (s)</label>
+                                                        <input class="form-control form-control-sm" name="req_paymentduration" type="text" value="@ViewBag.req_paymentduration">
+                                                        <div class="invalid-feedback">Payment duration, required !</div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <label for="formFileSm" class="form-label">DC /DA Agent (HH, P272 and AMR)</label>
+                                                        <input class="form-control form-control-sm" name="req_dcda" type="text" value="@ViewBag.req_dcda">
+                                                        <div class="invalid-feedback">DC / DA Agent, required !</div>
+                                                    </div>
+                                                    <div class="col">
+
+
+                                                        <label for="formFileSm" class="form-label">Submission Deadline</label>
+                                                        <input class="form-control" type="date" name="req_subdeadline" id="txtSelectedDate" value="@ViewBag.req_subdeadline">
+                                                        <div class="invalid-feedback">Submission deadline, required !</div>
+                                                        @*<label for="formFileSm" class="form-label">Back by Date</label>
+                                                    <input class="form-control form-control-sm" name="req_backbydate" type="date">
+                                                    <div class="invalid-feedback">Back by date, required !</div>*@
+
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <label for="formFileSm" class="form-label">Contract Duration (s)</label>
+                                                        <input class="form-control form-control-sm" name="req_contractduration" id="req_contractduration" type="text" value="@ViewBag.req_contractduration" readonly>
+                                                        <div class="invalid-feedback">Contract duration, required !</div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <label for="formFileSm" class="form-label">Contract Start Date</label>
+                                                        <input class="form-control form-control-sm" name="req_contractstartdate" id="req_contractstartdate" type="date" value="@ViewBag.req_contractstartdate">
+                                                        <div class="invalid-feedback">Contract Start Date, required !</div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <label for="formFileSm" class="form-label">Contract End Date</label>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <input class="form-control form-control-sm" name="req_contractenddate" id="req_contractenddate" type="date" value="@ViewBag.req_contractenddate">
+                                                            </div>
+                                                            <div class="col">
+                                                                <button type="submit" class="btn btn-sm btn-primary" formaction="@Url.Action("NewRequirements", "Requirements")">+</button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="invalid-feedback">Contract End Date, required !</div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <table class="table-sm">
+                                                            <tr>
+                                                                <td style="font: small-caps; background-color:lightcyan">ID</td>
+                                                                <td style="font: small-caps; background-color: lightcyan">Cont. Start Date</td>
+                                                                <td style="font: small-caps; background-color: lightcyan">Cont. End Date</td>
+                                                                <td style="font: small-caps; background-color: lightcyan">Days</td>
+                                                                <td style="font: small-caps; background-color: lightcyan">Actions</td>
+                                                            </tr>
+                                                            @{
+                                                                if (@ViewBag.tmpStartEndDateModel != null)
+                                                                {
+                                                                    foreach (var item in @ViewBag.tmpStartEndDateModel)
+                                                                    {
+                                                                        <tr>
+                                                                            <td style="font:small-caps; font-size:15px;">@item.id</td>
+                                                                            <td style="font:small-caps; font-size:15px;">@item.startDate</td>
+                                                                            <td style="font:small-caps; font-size:15px;">@item.endDate</td>
+                                                                            <td style="font:small-caps; font-size:15px;">@item.duration</td>
+                                                                            <td><button type="submit" data-toggle="tooltip" class="btn btn-danger" formaction="@Url.Action("NewRequirements", "Requirements", new { conDura = @item.id })"><span class="bi bi-trash-fill"></span></button></td>
+                                                                        </tr>
+                                                                    }
+                                                                }
+                                                            }
+
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <label for="formFile" class="form-label">Upload File 1</label>
+                                                        <input class="form-control form-control-sm" id="formFileSm" name="req_uploadFile_1" type="file" value="@ViewBag.req_uploadFile_1">
+                                                    </div>
+                                                    <div class="col">
+                                                        <label for="formFile" class="form-label">Monarch Terms and Condition of Tender</label>
+                                                        <input class="form-control form-control-sm" type="file" id="formFileSm" name="req_uploadFile_3">
+                                                    </div>
+                                                    <div class="col">
+                                                        <label for="formFile" class="form-label">Upload File 2</label>
+                                                        <input class="form-control form-control-sm" type="file" id="formFileSm" name="req_uploadFile_2">
+                                                    </div>
+                                                    <div class="col">
+                                                        <label for="formFile" class="form-label">Upload File 3</label>
+                                                        <input class="form-control form-control-sm" type="file" id="formFileSm" name="req_uploadFile_4">
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <div class="row">
+                                                    <div class="col">
+                                                        @*<label for="formFileSm" class="form-label">Billing</label>
+                                                    <textarea class="form-control" name="req_billingtxt" rows="4" cols="80">
+                                                    @ViewBag.req_billingtxt
+                                                    </textarea>*@
+                                                    </div>
+                                                    <div class="col">
+                                                    </div>
+                                                    <div class="col">
+                                                    </div>
+                                                    <div class="col">
+                                                        <label class="form-label">Submission Email</label>
+                                                        <textarea class="form-control" name="req_comment" rows="3"></textarea>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col">
+                                <button href="#" class="btn btn-info btn-sm" formaction="@Url.Action("readXLSX", "Analysis")">< Previous</button>
+                            </div>
+                            <div class="col">
+                            </div>
+                            <div class="col">
+                            </div>
+                            <div class="col">
+                                <button class="btn btn-success btn-sm" type="submit">Save ></button>
+                            </div>
+                        </div>
+
+                        //Modal
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Add Supplier&nbsp;&nbsp;</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <label for="formFileSm" class="form-label">Supplier</label>
+                                                <select class="form-select" name="reqSupplier" aria-label="Default select example">
+                                                    <option value="">Select</option>
+                                                    @{
+                                                        foreach (var item in @ViewBag.supplierList)
+                                                        {
+                                                            <option value="@item.Value">@item.Text</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="invitationtotender" value="@ViewBag.Invitationtotender" />
+                                        @*<div class="row">
+                                            <div class="col">
+                                                <label for="formFileSm" class="form-label">Invitation to Tender</label>
+                                                <textarea class="form-control" name="invitationtotender" rows="6">@ViewBag.Invitationtotender</textarea>
+                                            </div>
+                                        </div>
+                                    <div class="row">
+                                            <div class="col">
+                                                <label for="formFileSm" class="form-label">Email id</label>
+                                                <textarea class="form-control" name="emailids" rows="4"></textarea>
+                                            </div>
+                                        </div>*@
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-sm btn-primary" formaction="@Url.Action("NewRequirements", "Requirements")">Add</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contract End Date Modal-->
+                        <div class="modal fade" id="cedModal" tabindex="-1" role="dialog" aria-labelledby="cedModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="cedModalLabel">Contract End Date&nbsp;&nbsp;</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <input class="form-control form-control-sm" name="req_contractenddate2" id="req_contractenddate2" type="date">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-sm btn-primary" formaction="@Url.Action("NewRequirements", "Requirements")">Add</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div id="completed" class="container tab-pane fade">
+                    <br>
+                </div>
+            </div>
+        </div>
+
+    <div class="card-footer text-muted">
+        @if (TempData["INFO"] != null)
+        {
+            <p>Information: <font color="green">@TempData["INFO"]</font></p>
+        }
+        else if (TempData["ERROR"] != null)
+        {
+            <p>Information: <font color="red">@TempData["ERROR"]</font></p>
+        }
+    </div>
+    </div>
+    
+
+    <script type="text/javascript">
+
+        function next() {
+            document.getElementById("newReq").value = "Next";
+            alert("innext");
+        }
+
+        function previous() {
+            document.getElementById("newReq").value = "Previous";
+            alert("in prev");
+
+        }
+
+        function contract_duration() {
+
+            var startDate = new Date(document.getElementById("req_contractstartdate").value);
+            var endDate = new Date(document.getElementById("req_contractenddate").value);
+
+            days = endDate.getMonth() - startDate.getMonth() + (12 * (endDate.getFullYear() - startDate.getFullYear()));
+
+            //alert(days);
+
+            document.getElementById("req_contractduration").value = days;
+
+        }
+
+    </script>
+</main>

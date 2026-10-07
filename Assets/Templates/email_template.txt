@@ -1,0 +1,48 @@
+Dear Sir/Madam                                                                                                         
+<INVTOTENDER>
+
+Company number : <COMPREG>
+
+Price under <COMPNAME>
+ 
+EIC partnership has been appointed by <NEWSUPP> to assist with its energy procurement requirements. You have been invited to participate in this mini-competition for the provision of <ENERGYTYPE> supplies under Lot <1> within the DPS agreement referenced above.
+
+Requirements
+For the sites listed in the attached schedule please provide quotations for supply including the following options:
+
+Payment term(s):      	<PAYMENTTERMS>
+ 
+Payment duration(s):	<CONTDURATION> days
+ 
+Energy type(s):         <FUELTYPE>
+ 
+Contract type(s):	Fully Fixed including all pass through charges
+ 
+Contract Start Date:	<CONTSTARTDATE>
+ 
+Contract Duration(s):	End Date <30/09/2026>
+
+Included commission:	<INCLUDED_COMM> mpan/annum
+ 
+Micro Business		No
+ 
+DC/DA Agent (HH, P272 and AMR):	Stark (supplier nomination)
+
+Billing:	Original paper invoices to be sent to EIC partnership Head Office.
+
+		E-bills to be emailed to e.billing@eic.co.uk
+		Online access to copy invoices to be provided to EIC partnership  .
+
+Can you please supply EAC and Take or Pay conditions, when supplying your prices.
+
+Please confirm that you can register and support smets2 meters also Targeted Charging Review (TCR) is included in this quote.
+Submission
+
+Tenders should be emailed to:	EnergyTendersTeam@eic.co.uk
+ 
+Submission deadline:	<SUB_DEADLINE>
+ 	 
+Please include your latest terms and conditions and ensure that you provide your most competitive price as you may not get another opportunity to re-tender. All submissions including re-quotes must comply with the requirements in this ITT, any variations made by EIC partnership   will be confirmed in writing only. Any late, incomplete, incorrect or non-confirming tenders may be disqualified by EIC partnership   without further notice.
+
+By submitting an offer for this ITT you agree that your submission is bona-fide, correct and complies with the requirement. The requirement within this ITT will prevail over any supply terms and conditions provided unless non-conformances are clearly highlighted and accepted in writing by EIC partnership  .
+Kind regards,

@@ -1,0 +1,584 @@
+﻿
+@{
+    ViewBag.Title = "Complete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"></script>
+
+<style>
+    .tableFixHead {
+        overflow: auto;
+        height: 100px;
+    }
+
+        .tableFixHead thead th {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+    /* Just common table stuff. Really. */
+    table {
+        border - collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        padding: 8px 16px;
+    }
+
+    th {
+        background: #eee;
+    }
+
+    h6 {
+        width: 100%;
+        text-align: center;
+        border-bottom: 1px solid #000;
+        line-height: 0.1em;
+    }
+
+    h6 span {
+        background: #fff;
+        padding: 0 10px;
+    }
+</style>
+
+<main aria-labelledby="title">
+    <div class="card text-left">
+        <div class="card-header">
+            <h5 class="card-title">Complete</h5>
+            Tender Id: <font color="brown">@ViewBag.NewTender.id</font>
+        </div>
+        <div class="card-body">
+            <button type="button" class="btn btn-success btn-sm">@Html.ActionLink("Close", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</button>
+            <br /> <br />
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link disabled">Upload</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled">Analysis</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled">Requirements</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active"  data-toggle="tab" href="#completed">Completed</a>
+                </li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div id="upload" class="container tab-pane fade">
+                    <br>
+                </div>
+
+                <div id="analysis" class="container tab-pane fade">
+                    <br>
+                </div>
+
+                <div id="requirements" class="container tab-pane fade">
+                </div>
+                <div id="completed" class="container tab-pane active">
+                    <br>
+                    <div class="row" style="background-color:aliceblue">
+                        <h6><span>Upload details</span></h6>
+                        <div class="col">
+                            Half Hourly / Non Half Hourly / Gas
+                        </div>
+                        <div class="col">
+                            Commissions
+                        </div>
+                        <div class="col">
+                            Current Supplier
+                        </div>
+                        <div class="col">
+                            Company Reg
+                        </div>
+                        <div class="col">
+                            Newlon DPS
+                        </div>
+                        <div class="col">
+                        </div>
+                    </div>
+                    <div class="row" style="background-color:aliceblue">
+                        <div class="col">
+                            <label style="color:blue">@ViewBag.HhnhhGas</label>
+                        </div>
+                        <div class="col">
+                            <label style="color:blue">@ViewBag.NewTender.commission</label>
+                        </div>
+                        <div class="col">
+                            <label style="color:blue">@ViewBag.CurrentSupplier</label>
+                        </div>
+                        <div class="col">
+                            <label style="color:blue">@ViewBag.NewTender.comp_reg</label>
+                        </div>
+                        <div class="col">
+                            <label style="color:blue">@ViewBag.NewTender.newlondps</label>
+                        </div>
+                        <div class="col">
+                        </div>
+                    </div>
+
+                    <div class="row" style="background-color: aliceblue">
+                        <div class="col">
+                            Fuel Type
+                            <div>
+                                <label style="color:blue">@ViewBag.FuelType</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            End Date / Length
+                            <div>
+                                <label style="color:blue">@ViewBag.NewTender.enddatelength</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            Analysis AQ
+                            <div>
+                                <label style="color:blue">@ViewBag.NewTender.analysisaq</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            Matrix Pricing
+                            <div>
+                                <label style="color:blue">@ViewBag.NewTender.fillers</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            MOP Agreement in place
+                            <div>
+                                <label style="color:blue">@ViewBag.NewTender.mopagreement</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            CNB No
+                            <div>
+                                <label style="color:blue">@ViewBag.NewTender.supplytype</label>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <h6><span>Analysis details</span></h6>
+                        <div class="row">
+                            <div class="col">
+                                Client
+                                <p>@ViewBag.Analysis.MasErmNetworkModel.name</p>
+                            </div>
+                            <div class="col">
+                                Consultant
+                                <p>@ViewBag.Analysis.consultantname</p>
+                            </div>
+                            <div class="col">
+                                Email
+                                <p>@ViewBag.Analysis.consultantemail</p>
+                            </div>
+                            <div class="col">
+                                Head Office
+                                <p>@ViewBag.Analysis.MasErmNetworkModel.headaddress1</p>
+                            </div>
+                            <div class="col">
+                                Address
+                                <p>@ViewBag.Analysis.MasErmNetworkModel.corraddress1</p>
+                            </div>
+                            <div class="col">
+                            </div>
+                        </div>
+                        @*<div class="row">
+                            <div class="tableFixHead" style="height: 300px; overflow-x: auto;">
+                                <table class="table-sm table-bordered table-striped mb-0 text-nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Location Ref</th>
+                                            <th scope="col">Client Ref</th>
+                                            <th scope="col">Address</th>
+                                            <th scope="col"></th>
+                                            <th scope="col"></th>
+                                            <th scope="col"></th>
+                                            <th scope="col">Postcode</th>
+                                            <th scope="col">MSN</th>
+                                            <th scope="col">Mpan Full</th>
+                                            <th scope="col">Profile</th>
+                                            <th scope="col">MTC</th>
+                                            <th scope="col">LLF</th>
+                                            <th scope="col">Distributor ID</th>
+                                            <th scope="col">Mpan Core</th>
+                                            <th scope="col">Mpan Check</th>
+                                            <th scope="col">Day (kWh)</th>
+                                            <th scope="col">Night (kWh)</th>
+                                            <th scope="col">Evening (kWh)</th>
+                                            <th scope="col">Total (kWh)</th>
+                                            <th scope="col">Start Date</th>
+                                            <th scope="col">Payment Method</th>
+                                            <th scope="col">Payment Duration</th>
+                                            <th scope="col">Standing Charge Period</th>
+                                            <th scope="col">Standing Charge</th>
+                                            <th scope="col">Day Rate</th>
+                                            <th scope="col">Night Rate</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            int idx = 0;
+                                        }
+
+                                        @foreach (var item in ViewBag.Analysis.MasErmTenderMsnModel_s)
+                                        {
+                                            <tr>
+                                                <td>@item.locref</td>
+                                                <td>@item.clientref</td>
+                                                <td>@item.address1</td>
+                                                <td>@item.address2</td>
+                                                <td>@item.address3</td>
+                                                <td>@item.address4</td>
+                                                <td>@item.postcode</td>
+                                                <td>@item.msn</td>
+                                                <td>@ViewBag.Analysis.MasErmTenderMpanModel_s[idx].mpan</td>
+                                                <td>@ViewBag.Analysis.MasErmTenderMpanModel_s[idx].profile</td>
+                                                <td>@ViewBag.Analysis.MasErmTenderMpanModel_s[idx].mtc</td>
+                                                <td>@ViewBag.Analysis.MasErmTenderMpanModel_s[idx].llf</td>
+                                                <td>@ViewBag.Analysis.MasErmTenderMpanModel_s[idx].distributorid</td>
+                                                <td>@ViewBag.Analysis.MasErmTenderMpanModel_s[idx].mpan_core</td>
+                                                <td align="center">
+                                                    @if (@ViewBag.Analysis.MasErmTenderMpanModel_s[idx].mpan_core_valid == 1)
+                                                    {
+                                                        <img src="~/Assets/Images/right.png" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="~/Assets/Images/wrong.png" />
+                                                    }
+                                                </td>
+                                                <td>@ViewBag.Analysis.MasErmTenderConsumptionModel_s[idx].day</td>
+                                                <td>@ViewBag.Analysis.MasErmTenderConsumptionModel_s[idx].night</td>
+                                                <td>@ViewBag.Analysis.MasErmTenderConsumptionModel_s[idx].evening</td>
+                                                <td>@ViewBag.Analysis.MasErmTenderConsumptionModel_s[idx].total</td>
+                                                <td>@ViewBag.Analysis.MasErmTenderContractModel_s[idx].startdate</td>
+                                                <td>@ViewBag.Analysis.MasErmTenderContractModel_s[idx].payment_method</td>
+                                                <td>@ViewBag.Analysis.MasErmTenderContractModel_s[idx].payment_duration</td>
+
+                                                <td>@ViewBag.Analysis.MasErmTenderCurrentRatesModel_s[idx].standingchargeperiod</td>
+                                                <td>@ViewBag.Analysis.MasErmTenderCurrentRatesModel_s[idx].standing_charge</td>
+                                                <td>@ViewBag.Analysis.MasErmTenderCurrentRatesModel_s[idx].day_rate</td>
+                                                <td>@ViewBag.Analysis.MasErmTenderCurrentRatesModel_s[idx].night_rate</td>
+
+                                            </tr>
+
+                                            idx++;
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>*@
+                        
+                    </div>
+
+                    <br />
+
+                    <div class="row" style="background-color: aliceblue">
+                        <h6><span>Requirements details</span></h6>
+                        <div class="col">
+                            Company Registration
+                            <div>
+                                <label style="color:blue">@ViewBag.NewTender.comp_reg</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            Energy Types(s)
+                            <div>
+                                <label style="color:blue">
+                                @ViewBag.ReqEnergyTyp
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            Contract Duration (s)
+                            <div>
+                                <label style="color:blue">@ViewBag.Requirements.ContractDuration</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            Payment Terms (s)
+                            <div>
+                                <label style="color:blue">@ViewBag.Requirements.PaymentTerms</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            Contract Types
+                            <div>
+                                <label style="color:blue">@ViewBag.Requirements.ContractType</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            Included Commission
+                            <div>
+                                <label style="color:blue">@ViewBag.Requirements.IncludedCommission</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="background-color: aliceblue">
+                        <div class="col">
+                            Payment Durations (s)
+                            <div>
+                                <label style="color:blue">@ViewBag.Requirements.PaymentDuration</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            Contract Start Date
+                            <div>
+                                <label style="color:blue">@ViewBag.Requirements.Contract_startdate</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            Contract End Date
+                            <div>
+                                <label style="color:blue">@ViewBag.Requirements.Contract_enddate</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            DC/DA Agent
+                            <div>
+                                <label style="color:blue">@ViewBag.Requirements.Dcda_agent</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            Submission Deadline
+                            <div>
+                                <label style="color:blue">@ViewBag.Requirements.Submission_deadline</label>
+                            </div>
+                            @*Back by Date
+                <div>
+                    <label style="color:blue">@ViewBag.Requirements.Backbydate</label>
+                </div>*@
+                        </div>
+                        <div class="col">
+                            Submission Email
+                            <div>
+                                <label style="color:blue">@ViewBag.Notes.notes</label>
+                            </div>
+                            @*Billing
+                            <div>
+                                <label style="color:blue">@ViewBag.Requirements.Billing</label>
+                            </div>*@
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <h6><span>Supplier Details</span></h6>
+                        <div class="col">
+                            Supplier
+                            <div>
+                                <label style="color:blue">@ViewBag.Supplier</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            Invitation to Tender
+                            <div>
+                                <label style="color:blue">@ViewBag.SupplierList.InvitationToTender</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            Email Id's
+                            <div>
+                                <label style="color:blue">@ViewBag.SupplierList.EmailIds</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                        </div>
+                        <div class="col">
+                        </div>
+                        <div class="col">
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row" style="background-color: aliceblue">
+                        <h6><span>Contract Duration</span></h6>
+                        <div class="col">
+                            Contract Start Date
+                        </div>
+                        <div class="col">
+                            Conytract End Date
+                        </div>
+                        <div class="col">
+                            Duration in days
+                        </div>
+                        <div class="col">
+                        </div>
+                        <div class="col">
+                        </div>
+                        <div class="col">
+                        </div>
+                    </div>
+                    <div class="row" style="background-color: aliceblue">
+                        @{
+                            foreach (var itm in @ViewBag.ContractDuration)
+                            {
+                                <div class="col">
+                                    @itm.StartDate
+                                </div>
+                                <div class="col">
+                                    @itm.EndDate
+                                </div>
+                                <div class="col">
+                                    @itm.Duration
+                                </div>
+                                <div class="col">
+                                </div>
+                                <div class="col">
+                                </div>
+                                <div class="col">
+                                </div>
+                            }
+                        }
+                    </div>
+
+                    <br />
+
+                    <div class="row">
+                        <h6><span>Files uploaded details</span></h6>
+                        @{
+                            foreach (var itm in ViewBag.Uploads)
+                            {
+                                <div class="col">
+                                    @itm.heading
+                                    <div>
+                                        <label style="color:blue">@itm.upload_file</label>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        <div class="col">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <h6><span>Location / Meter uploaded details</span></h6>
+                        <div class="tableFixHead" style="height: 300px; overflow-x: auto;">
+                            <table class="table-sm table-bordered table-striped mb-0 text-nowrap">
+                                <thead>
+                                    <tr>
+                                        @{
+                                            foreach (string header in @ViewBag.nhhHeader)
+                                            {
+                                                <th scope="col">@header</th>
+                                            }
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        foreach (var item in ViewBag.Analysis.TrnERMTenderDetails)
+                                        {
+                                            <tr>
+                                                <td>@item.Location_Ref</td>
+                                                <td>@item.Client_Ref</td>
+                                                <td>@item.Address1</td>
+                                                <td>@item.Address2</td>
+                                                <td>@item.Address3</td>
+                                                <td>@item.Address4</td>
+                                                <td>@item.Address5</td>
+                                                <td>@item.Postcode</td>
+                                                <td>@item.Msn</td>
+                                                <td>@item.Mpanfull</td>
+                                                <td>@item.Profile</td>
+                                                <td>@item.Mtc</td>
+                                                <td>@item.Llf</td>
+                                                <td>@item.Distributor_ID</td>
+                                                <td>@item.Mpan_Core</td>
+                                                <td>@item.Mpan_Status</td>
+                                                <td>@item.Day_kWh</td>
+                                                <td>@item.Night_kWh</td>
+                                                <td>@item.Evening_kWh</td>
+                                                <td>@item.Peak_kWh</td>
+                                                <td>@item.OffPeak_kWh</td>
+                                                <td>@item.Total_kWh</td>
+                                                <td>@item.kVa</td>
+                                                <td>@item.Start_Date</td>
+                                                <td>@item.Payment_Method</td>
+                                                <td>@item.Payment_Duration</td>
+                                                <td>@item.Supplier</td>
+                                                <td>@item.LastBill_Date</td>
+                                                <td>@item.LastBill_Date_Supplier</td>
+                                                <td>@item.StandingCharge_penceorday</td>
+                                                <td>@item.DayRate</td>
+                                                <td>@item.NightRate</td>
+                                                <td>@item.EveningRate</td>
+                                                <td>@item.AvailRate</td>
+                                                <td>@item.PeakDecjan</td>
+                                                <td>@item.PeakNovfeb</td>
+                                                <td>@item.PeakOther</td>
+                                                <td>@item.OffPeak</td>
+                                                <td>@item.Other</td>
+                                                <td>@item.MeteringCharge_penceorday</td>
+                                                <td>@item.COMMSCharge_penceorday</td>
+                                                <td>@item.SettlementAgencyCharge_penceorday</td>
+                                                <td>@item.MeterAdministratorAgentCharge_penceorday</td>
+                                                <td>@item.NonEnergy_penceorday</td>
+                                                <td>@item.UMSCharge_penceorday</td>
+                                                <td>@item.TNUosFixedDailyCharge_penceorday</td>
+                                                <td>@item.IntelligentAnalytics_penceorday</td>
+                                                <td>@item.RenewableObligation_penceorday</td>
+                                                <td>@item.NuclearRABLevy_penceorday</td>
+                                                <td>@item.AMRCharge_penceorday</td>
+                                                <td>@item.MeterAssetProviderMAPCharge_penceorday</td>
+                                                <td>@item.DataCollectorDataAggregator_penceorday</td>
+                                                <td>@item.MSPUnitCharge_penceorday</td>
+                                                <td>@item.MeterServiceAdvancedCharge_penceorday</td>
+                                                <td>@item.SiteFee_penceorday</td>
+                                                <td>@item.DayAheadPremium_penceorday</td>
+                                                <td>@item.REGO_penceorday</td>
+                                                <td>@item.CfdCharge_penceorday</td>
+                                                <td>@item.GreengasLevyCharge_penceorday</td>
+                                                <td>@item.DataServicesAdvanced_penceorday</td>
+                                                <td>@item.Remarks</td>
+                                                <td>@item.ERMRemarks</td>
+                                            </tr>
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+        </div>
+        <div class="card-footer text-muted">
+            @if (TempData["INFO"] != null)
+            {
+                <p>Information: <font color="green">@TempData["INFO"]</font></p>
+            }
+            else if (TempData["ERROR"] != null)
+            {
+                <p>Information: <font color="red">@TempData["ERROR"]</font></p>
+            }
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+
+        function next()
+        {
+            document.getElementById("newReq").value = "Next";
+            alert("innext");
+        }
+
+        function previous() {
+            document.getElementById("newReq").value = "Previous";
+            alert("in prev");
+
+        }
+
+    </script>
+</main>
