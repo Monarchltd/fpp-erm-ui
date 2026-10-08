@@ -60,10 +60,12 @@ namespace fppErm.Controllers
                 uploadPage.fueltype_brown =     Request.Form["fueltype_brown"];
                 uploadPage.fueltype_green =     Request.Form["fueltype_green"];
                 uploadPage.fueltype_carbon =    Request.Form["fueltype_carbon"];
+                uploadPage.fueltype_selectgreen = Request.Form["fueltype_selectgreen"];
 
                 string fueltype =               uploadPage.fueltype_brown != null ? uploadPage.fueltype_brown : "00";
                 fueltype +=                     uploadPage.fueltype_green != null ? uploadPage.fueltype_green : "00";
                 fueltype +=                     uploadPage.fueltype_carbon != null ? uploadPage.fueltype_carbon : "00";
+                fueltype +=                     uploadPage.fueltype_selectgreen != null ? uploadPage.fueltype_selectgreen : "00";
 
                 //uploadPage.fueltype =         Request.Form["fueltype"];
                 uploadPage.fueltype =           fueltype;

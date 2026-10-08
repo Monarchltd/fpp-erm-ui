@@ -60,7 +60,7 @@
                 @{
                     if (ViewBag.MailSent == false)
                     {
-                        <button type="button" class="btn btn-warning btn-sm">@Html.ActionLink("Send Email", "SendMail", "Send", new { area = "" }, new { @class = "nav-link" })</button>
+                        <button id="sendemail" type="button" class="btn btn-warning btn-sm" onclick="disablebutton();">@Html.ActionLink("Send Email", "SendMail", "Send", new { area = "" }, new { @class = "nav-link" })</button>
                     }
                     else
                     {
@@ -70,12 +70,15 @@
 
                 <br />
                 <br>
-                Dear Sir/Madam,
+                Dear Sir/ Madam,
                 <br />
                 @{
-                    foreach (var itm in @ViewBag.Result.ermSuppliers)
+                    if (@ViewBag.Result.ermSuppliers != null)
                     {
-                        <label style="color:blue">@itm.InvitationToTender</label>
+                        foreach (var itm in @ViewBag.Result.ermSuppliers)
+                        {
+                            <label style="color:blue">@itm.InvitationToTender</label>
+                        }
                     }
                 }
                 <br /><br />
@@ -228,6 +231,9 @@
     
 
     <script type="text/javascript">
-
+        function disablebutton()
+        {
+            document.getElementById("sendemail").disabled = true;
+        }
     </script>
 </main>

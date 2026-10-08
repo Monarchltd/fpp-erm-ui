@@ -1,0 +1,14 @@
+In new requirments
+Line No 51
+System.Collections.Generic.List`1[DotNet8.WebApi.Factory.Model.MasErmSupplierModel]
+Line No 91
+Line No 106
+Line No 175
+Line No 178
+Line No 182
+Line No 227
+System.Collections.Generic.List`1[DotNet8.WebApi.Factory.Model.MasErmSupplierModel]
+Line No 257
+Line No 267
+Line No 323
+Line No 328

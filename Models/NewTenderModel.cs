@@ -31,6 +31,7 @@ namespace DotNet8.WebApi.Factory.Model
         public string fueltype_brown { get; set; }
         public string fueltype_green { get; set; }
         public string fueltype_carbon { get; set; }
+        public string fueltype_selectgreen { get; set; }
 
     }
 }

@@ -118,17 +118,19 @@
                             <div class="col">
                                 Fuel Type<br />
                                 @*<select class="form-select" name="fueltype" aria-label="Default select example" required>
-                        <option value="">Select</option>
-                        <option value="B" @{ if (@ViewBag.NewTender != null) { if (@ViewBag.NewTender.uploadPage.fueltype == "B") { @ViewBag.NewTender.isSelected  ; } }}>Both</option>
-                        <option value="E" @{ if (@ViewBag.NewTender != null) { if (@ViewBag.NewTender.uploadPage.fueltype == "E") { @ViewBag.NewTender.isSelected  ; } }}>Brown</option>
-                        <option value="G" @{ if (@ViewBag.NewTender != null) { if (@ViewBag.NewTender.uploadPage.fueltype == "G") { @ViewBag.NewTender.isSelected  ; } }}>Green</option>
-                    </select>*@
+            <option value="">Select</option>
+            <option value="B" @{ if (@ViewBag.NewTender != null) { if (@ViewBag.NewTender.uploadPage.fueltype == "B") { @ViewBag.NewTender.isSelected  ; } }}>Both</option>
+            <option value="E" @{ if (@ViewBag.NewTender != null) { if (@ViewBag.NewTender.uploadPage.fueltype == "E") { @ViewBag.NewTender.isSelected  ; } }}>Brown</option>
+            <option value="G" @{ if (@ViewBag.NewTender != null) { if (@ViewBag.NewTender.uploadPage.fueltype == "G") { @ViewBag.NewTender.isSelected  ; } }}>Green</option>
+        </select>*@
                                 <input class="form-check-input" type="checkbox" value="BR" name="fueltype_brown" @{ if (@ViewBag.NewTender != null) { if (@ViewBag.NewTender.uploadPage.fueltype_brown == "BR") { @ViewBag.NewTender.isChecked  ; } }}>
                                 <label class="form-check-label" for="fueltype_brown">Brown</label>&nbsp;
                                 <input class="form-check-input" type="checkbox" value="GR" name="fueltype_green" @{ if (@ViewBag.NewTender != null) { if (@ViewBag.NewTender.uploadPage.fueltype_green == "GR") { @ViewBag.NewTender.isChecked  ; } }}>
                                 <label class="form-check-label" for="fueltype_green">Green</label>&nbsp;
                                 <input class="form-check-input" type="checkbox" value="CA" name="fueltype_carbon" @{ if (@ViewBag.NewTender != null) { if (@ViewBag.NewTender.uploadPage.fueltype_carbon == "CA") { @ViewBag.NewTender.isChecked  ; } }}>
                                 <label class="form-check-label" for="fueltype_carbon">Carbon Zero Gas - Ecotricity</label>
+                                <input class="form-check-input" type="checkbox" value="SG" name="fueltype_selectgreen" @{ if (@ViewBag.NewTender != null) { if (@ViewBag.NewTender.uploadPage.fueltype_selectgreen == "SG") { @ViewBag.NewTender.isChecked  ; } }}>
+                                <label class="form-check-label" for="fueltype_carbon">Select Green</label>
                             </div>
                         </div>
                         <div class="row">

@@ -195,6 +195,8 @@ namespace fppErm.Controllers
             var res =                                 response.Content.ReadFromJsonAsync<MasErmTenderModel_2>().Result;
 
             ViewBag.NewTender =                       res;
+            ViewBag.Cnbno =                           newTender.uploadPage.cnbno;
+
 
             //Update MasERNTenderHeader after getting the Tender Id
             MasErmTenderHeaderModel_1 masErmTenderHeaderModel_1 =   new MasErmTenderHeaderModel_1();
@@ -242,10 +244,10 @@ namespace fppErm.Controllers
 
             //Uploads.
             List<TrnERMRequirementsUploads> req_upload = new List<TrnERMRequirementsUploads>();
-            req_upload.Add(new TrnERMRequirementsUploads { MasErmTender = res.id, MasErmRequirements = res4.id, tenderref = guid, heading = "Upload File 1", upload_file = upload_file1, cusr = username, cdte = DateTime.Now, uusr="", udte= DateTime.MinValue, isActive=1 });
+            req_upload.Add(new TrnERMRequirementsUploads { MasErmTender = res.id, MasErmRequirements = res4.id, tenderref = guid, heading = "HH Data", upload_file = upload_file1, cusr = username, cdte = DateTime.Now, uusr="", udte= DateTime.MinValue, isActive=1 });
             req_upload.Add(new TrnERMRequirementsUploads { MasErmTender = res.id, MasErmRequirements = res4.id, tenderref = guid, heading = "Monarch Terms and Condition of Tender", upload_file = upload_file2, cusr = username, cdte = DateTime.Now, uusr = "", udte = DateTime.MinValue, isActive = 1 });
-            req_upload.Add(new TrnERMRequirementsUploads { MasErmTender = res.id, MasErmRequirements = res4.id, tenderref = guid, heading = "Upload File 2", upload_file = upload_file3, cusr = username, cdte = DateTime.Now, uusr = "", udte = DateTime.MinValue, isActive = 1 });
-            req_upload.Add(new TrnERMRequirementsUploads { MasErmTender = res.id, MasErmRequirements = res4.id, tenderref = guid, heading = "Upload File 3", upload_file = upload_file4, cusr = username, cdte = DateTime.Now, uusr = "", udte = DateTime.MinValue, isActive = 1 });
+            req_upload.Add(new TrnERMRequirementsUploads { MasErmTender = res.id, MasErmRequirements = res4.id, tenderref = guid, heading = "MOP Agreement", upload_file = upload_file3, cusr = username, cdte = DateTime.Now, uusr = "", udte = DateTime.MinValue, isActive = 1 });
+            req_upload.Add(new TrnERMRequirementsUploads { MasErmTender = res.id, MasErmRequirements = res4.id, tenderref = guid, heading = "LOA", upload_file = upload_file4, cusr = username, cdte = DateTime.Now, uusr = "", udte = DateTime.MinValue, isActive = 1 });
             req_upload.Add(new TrnERMRequirementsUploads { MasErmTender = res.id, MasErmRequirements = res4.id, tenderref = guid, heading = "Meter File Upload", upload_file = newTender.uploadPage.uploadedFile.FileName, cusr = username, cdte = DateTime.Now, uusr = "", udte = DateTime.MinValue, isActive = 1 });
             ViewBag.Uploads = req_upload;
             content = JsonContent.Create(req_upload);
@@ -388,6 +390,12 @@ namespace fppErm.Controllers
                 {
                     ViewBag.FuelType += ", Carbon Zero Gas - Ecotricity";
                 }
+
+                if (newTender.uploadPage.fueltype.Substring(6, 2) == "SG")
+                {
+                    ViewBag.FuelType += ", Select Green";
+                }
+
             }
 
             switch (newTender.uploadPage.supplytype)

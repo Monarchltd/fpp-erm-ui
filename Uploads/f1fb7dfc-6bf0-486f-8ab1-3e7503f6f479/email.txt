@@ -1,0 +1,31 @@
+<html><body><p><b>Dear Sir/Madam,</b></p>
+<p><b>Invitation to Tender - Electric ITT - Crown (E) Wed-155448 (Current Supplier - Crown (E)) (127 Sites) DPS Reference 2020/S 097-232247</b></p>
+<p>Company Number: IP21194R</p>
+<p>Price Under Monarch</p>
+<p>EIC partnership has been appointed by Futures to assist with its energy procurement requirements. You have been invited to participate in this mini-competition for the provision of electricity supplies under Lot 1 within the DPS agreement referenced above.</p>
+<p><b>Requirements</b></p>
+<p>For the sites listed in the attached schedule please provide quotations for supply including the following options:</p>
+<table>
+<tr><td>Payment term(s):</td><td>BACS</td></tr>
+<tr><td>Payment duration(s):</td><td>129 days</td></tr>
+<tr><td>Energy type(s):</td><td>Select Green</td></tr>
+<tr><td>Contract type(s):</td><td>Fully Fixed including all pass through charges</td></tr>
+<tr><td>Contract Start Date:</td><td>07/10/2026</td></tr>
+<tr><td>Contract Duration(s):</td><td>End Date 13/02/2027</td></tr>
+<tr><td>Included commission:</td><td>£  0.25 ( £/pa )</td></tr>
+<tr><td>Micro Business</td><td>No</td></tr>
+<tr><td>DC/DA Agent (HH, P272 and AMR):</td><td>Stark (supplier nomination)</td></tr>
+<tr><td>Billing</td><td>Original paper invoices to be sent to EIC partnership   Head Office.</td></tr>
+<tr><td></td><td>E-bills to be emailed to e.billing@eic.co.uk<br/>Online access to copy invoices to be provided to EIC partnership</td></tr>
+<table>
+<p><b>Can you please supply EAC and Take or Pay conditions, when supplying your prices.</b></p>
+<p><b>Please confirm that you can register and support smets2 meters also Targeted Charging Review (TCR) is included in this quote.</b></p>
+<p><b>Submission</b></p>
+<table>
+<tr><td>Tenders should be emailed to:</td><td>EnergyTendersTeam@eic.co.uk</td></tr>
+<tr><td>Submission deadline:</td><td>10/10/2026</td></tr>
+<table><br/>
+<p>Please include your latest terms and conditions and ensure that you provide your most competitive price as you may not get another opportunity to re-tender. All submissions including re-quotes must comply with the requirements in this ITT, any variations made by EIC partnership   will be confirmed in writing only. Any late, incomplete, incorrect or non-confirming tenders may be disqualified by EIC partnership   without further notice.</p>
+<p>By submitting an offer for this ITT you agree that your submission is bona-fide, correct and complies with the requirement. The requirement within this ITT will prevail over any supply terms and conditions provided unless non-conformances are clearly highlighted and accepted in writing by EIC partnership</p>
+<p>Kind regards,</p></body></html>
+
