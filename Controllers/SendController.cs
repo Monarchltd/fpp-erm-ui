@@ -12,6 +12,8 @@ using System.IO;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
+using System.Windows.Documents;
+using System.Collections.Generic;
 
 namespace fppErm.Controllers
 {
@@ -42,6 +44,39 @@ namespace fppErm.Controllers
                 var res =                       response.Content.ReadFromJsonAsync<viewERMTenderModel>().Result;
                 nhh nhh = new nhh();
                 ViewBag.nhhHeader =             nhh.nhhHeaders;
+
+                if (res.ermTender.fueltype != null)
+                {
+                    if (res.ermTender.fueltype.Substring(0, 2) == "BR")
+                    {
+                        ViewBag.FuelType = "Brown";
+                    }
+
+                    if (res.ermTender.fueltype.Substring(2, 2) == "GR")
+                    {
+                        ViewBag.FuelType += ", Green";
+                    }
+
+                    if (res.ermTender.fueltype.Substring(4, 2) == "CA")
+                    {
+                        ViewBag.FuelType += ", Carbon Zero Gas - Ecotricity";
+                    }
+
+                    if (res.ermTender.fueltype.Substring(6, 2) == "SG")
+                    {
+                        ViewBag.FuelType += ", Select Green";
+                    }
+
+                }
+
+                switch (res.ermTender.supplytype)
+                {
+                    case "1": ViewBag.HhnhhGas = "Electric - Half Haourly"; break;
+                    case "2": ViewBag.HhnhhGas = "Electric - Non Half Haourly"; break;
+                    case "3": ViewBag.HhnhhGas = "Gas"; break;
+                    default: break;
+                }
+
                 ViewBag.Result =                res;
             }
             catch (Exception ex)
@@ -112,6 +147,16 @@ namespace fppErm.Controllers
                     ViewBag.Result =        res;
                     TempData["sendEmail"] = res;
                     ViewBag.id =            res.ermTender.id;
+                    string tenderref =      res.ermUploads.Count > 0 ? res.ermUploads[0].tenderref.ToString() : "-noattach-";
+
+                    tenderref = AppDomain.CurrentDomain.BaseDirectory + @"Uploads~";
+
+                    foreach (var obj in res.ermUploads)
+                    {
+                        if (obj.upload_file.Trim().Length > 0)
+                            tenderref += obj.tenderref.ToString() + "\\" + obj.upload_file.ToString() + "~";
+                    }
+
                     string guid =           res.ermHeader.TenderRef.ToString();
                     var uploadPath =        Path.Combine(AppDomain.CurrentDomain.BaseDirectory + @"\Uploads", guid);
                     string subject =        CreateItemFromTemplate(res, uploadPath);
@@ -119,7 +164,8 @@ namespace fppErm.Controllers
                                             "&subjectline=" + subject + 
                                             "&mailto=" + mailto +
                                             "&tenderid=" + res.ermTender.id +
-                                            "&username=" + ViewBag.Username;
+                                            "&username=" + ViewBag.Username +
+                                            "&tenderref=" + tenderref;
 
                     //HttpResponseMessage sendEmailresponse = _client.GetAsync(spath).Result;
                     HttpResponseMessage sendEmailresponse = _client.GetAsync(spath).GetAwaiter().GetResult();

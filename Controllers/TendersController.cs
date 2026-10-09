@@ -14,6 +14,12 @@ namespace fppErm.Controllers
 
         public ActionResult NewTender()
         {
+            if (TempData["username"] == null)
+            {
+                TempData.Clear();
+                RedirectToAction("Login", "Home");
+            }
+
             ViewBag.Username =  TempData["username"];
             ViewBag.Error =     TempData["ERROr"];
             ViewBag.Info =      TempData["INFO"];

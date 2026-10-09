@@ -27,7 +27,7 @@
             <br />
             <button class="btn btn-warning btn-sm justify-content-start"><b>ERM Module</b><br /><font size="2">Beta Ver 1.0</font></button>
             <div class="text-dark">
-                @Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "navbar-brand text-black" })
+                @Html.ActionLink("Tenders View", "Index", "Home", new { area = "" }, new { @class = "btn btn-outline-dark btn-sm" })
             </div>
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -37,7 +37,7 @@
                 <ul class="navbar-nav flex-grow-1">
                     @*<li>@Html.ActionLink("Dashboard", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                 <li>@Html.ActionLink("New Tender", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>*@
-                    <li>@Html.ActionLink("Logout", "Login", "Home", new { area = "" }, new { @class = "nav-link text-black" })</li>
+                    <li>@Html.ActionLink("Logout", "Login", "Home", new { area = "" }, new { @class = "btn btn-outline-danger btn-sm" })</li>
                 </ul>
             </div>
             <button class="btn btn-dark btn-sm">@ViewBag.Username</button>

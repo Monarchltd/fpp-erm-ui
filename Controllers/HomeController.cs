@@ -50,9 +50,10 @@ namespace fppErm.Controllers
                 {
                     switch (tndr.MasErmTenderModel_s.supplytype)
                     {
-                        case "1": tndr.MasErmTenderModel_s.supplytype = "Electricity"; break;
-                        case "2": tndr.MasErmTenderModel_s.supplytype = "Gas"; break;
-                        default:  tndr.MasErmTenderModel_s.supplytype = "Error";  break;
+                        case "1": tndr.MasErmTenderModel_s.supplytype = "Ele-HH"; break;
+                        case "2": tndr.MasErmTenderModel_s.supplytype = "Ele-NHH";  break;
+                        case "3": tndr.MasErmTenderModel_s.supplytype = "Gas";      break;
+                        default:  tndr.MasErmTenderModel_s.supplytype = "Error";    break;
                     }
                 }
                 

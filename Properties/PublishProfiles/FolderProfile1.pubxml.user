@@ -3,7 +3,7 @@
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>C:\Users\Public\FixedPricingPortal\erm\ui\bin\app.publish\</_PublishTargetUrl>
-    <History>True|2026-10-08T14:32:29.6697420Z||;True|2026-10-08T14:10:04.4593992+01:00||;True|2026-10-08T13:58:29.8660627+01:00||;True|2026-10-08T13:40:14.3461418+01:00||;True|2026-10-08T11:56:23.1791137+01:00||;</History>
+    <History>True|2026-10-09T14:19:53.8209358Z||;True|2026-10-08T15:32:29.6697420+01:00||;True|2026-10-08T14:10:04.4593992+01:00||;True|2026-10-08T13:58:29.8660627+01:00||;True|2026-10-08T13:40:14.3461418+01:00||;True|2026-10-08T11:56:23.1791137+01:00||;</History>
     <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
@@ -56,10 +56,10 @@
       <publishTime>06/11/2026 12:37:18</publishTime>
     </File>
     <File Include="bin/fppErm.dll">
-      <publishTime>10/08/2026 15:31:56</publishTime>
+      <publishTime>10/09/2026 15:19:35</publishTime>
     </File>
     <File Include="bin/fppErm.pdb">
-      <publishTime>10/08/2026 15:31:56</publishTime>
+      <publishTime>10/09/2026 15:19:35</publishTime>
     </File>
     <File Include="bin/fr/Xceed.Wpf.AvalonDock.resources.dll">
       <publishTime>06/11/2026 12:37:18</publishTime>
@@ -644,13 +644,13 @@
       <publishTime>10/08/2026 13:54:35</publishTime>
     </File>
     <File Include="Views/Send/ViewSend.cshtml">
-      <publishTime>10/01/2026 09:00:16</publishTime>
+      <publishTime>10/09/2026 11:48:23</publishTime>
     </File>
     <File Include="Views/Shared/Error.cshtml">
       <publishTime>07/30/2026 11:52:10</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>10/08/2026 15:31:35</publishTime>
+      <publishTime>10/09/2026 11:53:31</publishTime>
     </File>
     <File Include="Views/Tenders/NewTender.cshtml">
       <publishTime>10/07/2026 15:53:03</publishTime>
@@ -662,7 +662,7 @@
       <publishTime>07/30/2026 11:52:10</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/08/2026 15:32:26</publishTime>
+      <publishTime>10/09/2026 15:19:50</publishTime>
     </File>
   </ItemGroup>
 </Project>

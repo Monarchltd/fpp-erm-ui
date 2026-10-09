@@ -1,14 +1,3 @@
-In new requirments
-Line No 51
-System.Collections.Generic.List`1[DotNet8.WebApi.Factory.Model.MasErmSupplierModel]
-Line No 91
-Line No 106
-Line No 175
-Line No 178
-Line No 182
-Line No 227
-System.Collections.Generic.List`1[DotNet8.WebApi.Factory.Model.MasErmSupplierModel]
-Line No 257
-Line No 267
-Line No 323
-Line No 328
+C:\Users\Public\FixedPricingPortal\erm\ui\
+System.Web.HttpPostedFileWrapper
+C:\Users\Public\FixedPricingPortal\erm\ui\Uploads\4d9067c5-cfd8-4489-b844-0b53427480cc\Grwp Cynefin Main Renewal Electric HH 25-09-2026-143028.xlsx
