@@ -25,16 +25,17 @@ namespace fppErm.Controllers
         // GET: Requirements
         public ActionResult NewRequirements(HttpPostedFileBase req_uploadFile_1, HttpPostedFileBase req_uploadFile_2, HttpPostedFileBase req_uploadFile_3, HttpPostedFileBase req_uploadFile_4)
         {
-            NewTenderModel newtender = (NewTenderModel)TempData["NEWTENDER"];
+            ViewBag.suppandates = Request.QueryString["suppandates"] != null ? Request.QueryString["suppandates"] : "0";
+            NewTenderModel newtender =      (NewTenderModel)TempData["NEWTENDER"];
 
-            HttpClient client =     new HttpClient();
-            client.BaseAddress =    new Uri(_baseurl);
+            HttpClient client =             new HttpClient();
+            client.BaseAddress =            new Uri(_baseurl);
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             HttpResponseMessage response1 =          client.GetAsync("diMasERMSupplier/getSupplier?id=" + 0).Result;
             List<MasErmSupplierModel> suppList1 =    new List<MasErmSupplierModel>();
             var logPath =                            Path.Combine(Server.MapPath("~/Uploads"), "logs.txt");
-//            StreamWriter writer =                    new StreamWriter(logPath);
+            //            StreamWriter writer =                    new StreamWriter(logPath);
 
             try
             {
@@ -48,7 +49,7 @@ namespace fppErm.Controllers
                         string svalue = "";
 
                         //ELECTRICITY
-                        if (newtender.uploadPage.supplytype == "1" || 
+                        if (newtender.uploadPage.supplytype == "1" ||
                             newtender.uploadPage.supplytype == "2")
                         {
                             if (item.type == 1 ||
@@ -86,16 +87,16 @@ namespace fppErm.Controllers
                 }
 
                 //Request parameters.
-                string conDura =            Request.Params["conDura"] != null ? Request.Params["conDura"] : "0";
-                string suppId =             Request.Params["suppId"] != null ? Request.Params["suppId"] : "0";
-                var bill_comment =          Request.Form["req_billingtxt"];
-                var req_contractenddate =   Request.Form["req_contractenddate"];
+                string conDura = Request.Params["conDura"] != null ? Request.Params["conDura"] : "0";
+                string suppId = Request.Params["suppId"] != null ? Request.Params["suppId"] : "0";
+                var bill_comment = Request.Form["req_billingtxt"];
+                var req_contractenddate = Request.Form["req_contractenddate"];
                 var req_contractstartdate = Request.Form["req_contractstartdate"];
-                var req_dcda =              Request.Form["req_dcda"];
-                var req_subdeadline =       Request.Form["req_subdeadline"];
-                var req_paymentduration =   Request.Form["req_paymentduration"];
-                var req_energytype =        Request.Form["req_energytype"];
-                var req_paymentterms =      Request.Form["req_paymentterms"];
+                var req_dcda = Request.Form["req_dcda"];
+                var req_subdeadline = Request.Form["req_subdeadline"];
+                var req_paymentduration = Request.Form["req_paymentduration"];
+                var req_energytype = Request.Form["req_energytype"];
+                var req_paymentterms = Request.Form["req_paymentterms"];
 
                 string req_contractduration = "";
 
@@ -149,22 +150,22 @@ namespace fppErm.Controllers
                 }
 
                 ViewBag.req_contractstartdate = req_contractstartdate;
-                ViewBag.req_contractenddate =   req_contractenddate;
-                ViewBag.req_contractduration =  req_contractduration;
-                ViewBag.Username =              TempData["username"];
-                ViewBag.supplierList =          suppList1.Select(x => new SelectListItem { Value = x.id.ToString(), Text = x.name }).ToList(); // TempData["supplierList"];
-                TempData["supplierList"] =      ViewBag.supplierList;
-                ViewBag.req_dcda =              req_dcda;
-                ViewBag.req_subdeadline =       req_subdeadline;
-                ViewBag.req_paymentduration =   req_paymentduration;
-                ViewBag.req_energytype =        req_energytype;
-                ViewBag.req_paymentterms =      req_paymentterms;
-                ViewBag.req_energytypeSel =     "selected";
-                ViewBag.req_paymenttermsSel =   "selected";
-                ViewBag.req_uploadFile_1 =      req_uploadFile_1 != null ? req_uploadFile_1 : null;
-                ViewBag.req_uploadFile_2 =      req_uploadFile_2;
-                ViewBag.req_uploadFile_3 =      req_uploadFile_3;
-                ViewBag.req_uploadFile_4 =      req_uploadFile_4;
+                ViewBag.req_contractenddate = req_contractenddate;
+                ViewBag.req_contractduration = req_contractduration;
+                ViewBag.Username = TempData["username"];
+                ViewBag.supplierList = suppList1.Select(x => new SelectListItem { Value = x.id.ToString(), Text = x.name }).ToList(); // TempData["supplierList"];
+                TempData["supplierList"] = ViewBag.supplierList;
+                ViewBag.req_dcda = req_dcda;
+                ViewBag.req_subdeadline = req_subdeadline;
+                ViewBag.req_paymentduration = req_paymentduration;
+                ViewBag.req_energytype = req_energytype;
+                ViewBag.req_paymentterms = req_paymentterms;
+                ViewBag.req_energytypeSel = "selected";
+                ViewBag.req_paymenttermsSel = "selected";
+                ViewBag.req_uploadFile_1 = req_uploadFile_1 != null ? req_uploadFile_1 : null;
+                ViewBag.req_uploadFile_2 = req_uploadFile_2;
+                ViewBag.req_uploadFile_3 = req_uploadFile_3;
+                ViewBag.req_uploadFile_4 = req_uploadFile_4;
 
                 var master_supplierlist = (IEnumerable<MasErmSupplierModel>)TempData["masterSupplierList"];
 
@@ -190,7 +191,6 @@ namespace fppErm.Controllers
                 //if (Request.Form["invitationtotender"]  != null &&
                 //    Request.Form["emailids"] != null)
                 {
-
                     ssModel = new SuppSubmissionModel();
 
                     foreach (var itm in ViewBag.supplierList)
@@ -322,7 +322,8 @@ namespace fppErm.Controllers
             {
                 //writer.Close();
             }
-
+            
+            
             return View();
         }
     }

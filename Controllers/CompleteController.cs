@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using fppErm.Helpers;
 using static Azure.Core.HttpHeader;
+using Org.BouncyCastle.Ocsp;
 
 
 namespace fppErm.Controllers
@@ -53,14 +54,16 @@ namespace fppErm.Controllers
             ViewBag.nhhHeader =             n.nhhHeaders;
             var suppliers =                 (List<SuppSubmissionModel>)TempData["SuppSubmissionModel"];
 
+            var newTender =                 (NewTenderModel)TempData["NEWTENDER"];
+            TempData["NEWTENDER"] =         newTender;
+
             //ViewBag.Analysis =              (MasErmTenderModel_1)TempData["ANALYSIS"];
             ViewBag.Analysis =              (MasErmTenderModel_3)TempData["ANALYSIS"];
 
             string username =               TempData["username"] != null ? TempData["username"].ToString() : "System";
 
-            var newTender =                 (NewTenderModel)TempData["NEWTENDER"];
-
             var model =                     (MasErmTenderModel_3)TempData["ANALYSIS"];
+            TempData["ANALYSIS"] =          model;
 
             //Upload file.
             string guid =                   model.MasErmTenderHeaderModel.TenderRef; //Guid.NewGuid().ToString(); 
@@ -142,13 +145,13 @@ namespace fppErm.Controllers
             model.MasErmNetworkModel.clientref =      "";
             string[] address =                        model.MasErmNetworkModel.headaddress1.Split(',');
             model.MasErmNetworkModel.headaddress1 =   address.Length > 1 ? address[0] + address[1] + address[2] : "";
-            model.MasErmNetworkModel.headaddress2 =   address.Length > 3 ? address[3] + address[4] : "";
-            model.MasErmNetworkModel.headpostcode =   address.Length > 4 ? address[4] : "";
+            model.MasErmNetworkModel.headaddress2 =   address.Length > 3 ? address[3].Length > 0 ? address[3] : "" : "";
+            model.MasErmNetworkModel.headpostcode =   address.Length > 4 ? address[4].Length > 0 ? address[4] : "" : "";
             model.MasErmNetworkModel.heademail =      "";
             address =                                 model.MasErmNetworkModel.corraddress1.Split(',');
             model.MasErmNetworkModel.corraddress1 =   address.Length > 1 ? address[0] + address[1] + address[2] : "";
             model.MasErmNetworkModel.corraddress2 =   address.Length > 3 ? address[3] + address[4] : "";
-            model.MasErmNetworkModel.corrpostcode =   address.Length > 4 ? address[4] : "";
+            model.MasErmNetworkModel.corrpostcode =   address.Length > 4 ? address[4].Length > 0 ? address[4] : "" : "";
             model.MasErmNetworkModel.corremail =      "";
             model.MasErmNetworkModel.isActive =       1;
 
@@ -221,7 +224,7 @@ namespace fppErm.Controllers
             TenderNotes.id =                                        0;
             TenderNotes.MasErmTender_id =                           res.id;
             TenderNotes.tenderref =                                 "";
-            TenderNotes.notes =                                     req_comment.ToString();
+            TenderNotes.notes =                                     req_comment != null ? req_comment.ToString() : String.Empty;
             TenderNotes.cusr =                                      username != null ? username : "System";
             TenderNotes.cdte =                                      DateTime.Now;
             TenderNotes.uusr =                                      "";
