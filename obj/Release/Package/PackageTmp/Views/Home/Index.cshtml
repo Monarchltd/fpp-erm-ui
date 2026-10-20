@@ -64,6 +64,10 @@
 <form method="post">
 
     <input type="hidden" name="tenderId" value="@TempData["TenderId"]" />
+    <input type="hidden" name="cnbNo" />
+    <input type="hidden" name="supplier" />
+    <input type="hidden" name="type" />
+
     <input type="hidden" name="notesUpdate" value="false" />
     <input type="hidden" name="statusUpdate" value="false" />
 
@@ -78,8 +82,11 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="inputGroup-sizing-sm">Search Tender Id / CNB No</span>
                     </div>
-                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                    <button type="button" class="btn btn-outline-dark">Search</button>
+                    &nbsp;&nbsp;
+                    <input type="text" name="searchvalue" value="@ViewBag.searchvalue" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                    <button type="submit" class="btn btn-outline-dark" formaction="@Url.Action("Index", "Home", new { search = "1" })">Search</button>
+                    &nbsp;&nbsp;
+                    <button type="button" class="btn btn-outline-dark">@Html.ActionLink("Clear Filter", "Index", "Home", new { search = "0" }, new { @class = "nav-link" })</button>
                     &nbsp;&nbsp;
                     <button type="button" class="btn btn-outline-primary">@Html.ActionLink("+ New Tender", "NewTender", "Tenders", new { area = "" }, new { @class = "nav-link" })</button>
                     &nbsp;&nbsp;
@@ -93,12 +100,12 @@
                 <table class="table table-sm table-hover">
                     <thead>
                         <tr>
-                            <th scope="col">Tender Id</th>
+                            @*<th scope="col">Tender Id</th>*@
+                            <th scope="col">CNB No</th>
                             <th scope="col">Client Name</th>
                             <th scope="col">Supplier</th>
                             <th scope="col">Type</th>
-                            <th scope="col">CNB No</th>
-                            <th scope="col">Consultant Name</th>
+                            @*<th scope="col">Consultant Name</th>*@
                             <th scope="col">Commission</th>
                             <th scope="col">Status</th>
                             <th scope="col">Version</th>
@@ -113,21 +120,32 @@
                             foreach (var item in ViewBag.Tenders)
                             {
                                 <tr>
-                                    <th scope="row">@item.id</th>
+                                    @*<th scope="row">@item.id</th>*@
+                                    <td>@item.CnbNo</td>
                                     <td>@item.MasErmNetworkModel_s.name</td>
                                     <td>@item.MasErmSupplierModel_s.name</td>
                                     <td>@item.MasErmTenderModel_s.supplytype</td>
-                                    <td>@item.CnbNo</td>
-                                    <td>@item.MasErmTenderModel_s.consultantname</td>
-                                    <td>@item.MasErmTenderModel_s.commission (@item.MasErmTenderModel_s.commission_type)</td>
+                                    @*<td>@item.MasErmTenderModel_s.consultantname</td>*@
+                                    <td>
+                                        @item.MasErmTenderModel_s.commission
+                                        @{ if (@item.MasErmTenderModel_s.commission_type == "1")
+                                            {
+                                                <label>£/pa</label>
+                                            }
+                                            else if (@item.MasErmTenderModel_s.commission_type == "2")
+                                            {
+                                                <label>p/kwh</label>
+                                            }
+                                        }
+                                    </td>
                                     <td>@item.TrnERMTenderStatus_s.StatusDesc</td>
                                     <td>@item.VersionId</td>
                                     <td>@item.CreatedBy</td>
                                     <td>@item.CreatedDate</td>
                                     <td>
                                         <div>
-                                            <button type="submit" title="Notes" class="btn btn-transparent btn-sm" formaction="@Url.Action("NotesPage", "Notes")" onclick="notesDialog(@item.id);"><span class="bi bi-chat-quote"></span></button>
-                                            <button type="submit" data-toggle="tooltip" title="Status" class="btn btn-transparent btn-sm" formaction="@Url.Action("StatusPage", "Status")" onclick="statusDialog(@item.id);"><i class="bi bi-person"></i></button>
+                                            <button type="submit" title="Notes" class="btn btn-transparent btn-sm" formaction="@Url.Action("NotesPage", "Notes")" onclick="notesDialog(@item.id, '@item.CnbNo');"><span class="bi bi-chat-quote"></span></button>
+                                            <button type="submit" data-toggle="tooltip" title="Status" class="btn btn-transparent btn-sm" formaction="@Url.Action("StatusPage", "Status")" onclick="statusDialog(@item.id, '@item.CnbNo');"><i class="bi bi-person"></i></button>
                                             @{
                                                 if (@item.TrnERMTenderStatus_s.StatusDesc != "Tender_Sent")
                                                 {
@@ -152,8 +170,9 @@
                                                 }
                                             }
 
+                                            <button type="submit" data-toggle="tooltip" class="btn btn-warning btn-sm" formaction="@Url.Action("AnalysisPage", "Analysis")" onclick="submitView(@item.id, '@item.CnbNo', '@item.MasErmSupplierModel_s.name', '@item.MasErmTenderModel_s.supplytype');"><span class="bi bi-file-earmark-binary"></span></button>
                                             <button data-toggle="tooltip" class="btn btn-transparent btn-sm"><span class="bi bi-files"></span></button>
-                                            <button type="submit" data-toggle="tooltip" class="btn btn-transparent btn-sm" formaction="@Url.Action("ViewSend", "Send")" onclick="submitView(@item.id);"><span class="bi bi-eye-fill"></span></button>
+                                            <button type="submit" data-toggle="tooltip" class="btn btn-transparent btn-sm" formaction="@Url.Action("ViewSend", "Send")" onclick="submitView(@item.id, '@item.CnbNo', '@item.MasErmSupplierModel_s.name', '@item.MasErmTenderModel_s.supplytype');"><span class="bi bi-eye-fill"></span></button>
                                             <button data-toggle="tooltip" class="btn btn-transparent btn-sm"><span class="bi bi-vector-pen"></span></button>
                                             <button data-toggle="tooltip" class="btn btn-danger btn-sm"><span class="bi bi-trash-fill"></span></button>
                                         </div>
@@ -169,7 +188,7 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content col-lg-3 col-md-4 col-sm-6">
                             <div class="modal-header">
-                                <h5 class="modal-title">Notes&nbsp;&nbsp; ( Tender Id : @TempData["TenderId"])</h5>
+                                <h5 class="modal-title">Notes&nbsp;&nbsp; ( CNB No : @TempData["CnbNo"])</h5>
                                 @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>*@
@@ -201,7 +220,7 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content col-lg-3 col-md-4 col-sm-6">
                             <div class="modal-header">
-                                <h5 class="modal-title">Status Updates&nbsp;&nbsp; ( Tender Id : @TempData["TenderId"])</h5>
+                                <h5 class="modal-title">Status Updates&nbsp;&nbsp; ( CNB No : @TempData["CnbNo"])</h5>
                             </div>
                             <div class="modal-body">
                                 <div class="row">
@@ -252,12 +271,14 @@
     if (state == "status")
         $(window).on('load', function () { $('#statusModal').modal('show'); });
 
-    function notesDialog(tender_id) {
+    function notesDialog(tender_id, cnbno) {
         document.getElementsByName("tenderId")[0].value = tender_id;
+        document.getElementsByName("cnbNo")[0].value = cnbno;
     }
 
-    function statusDialog(tender_id) {
+    function statusDialog(tender_id, cnbno) {
         document.getElementsByName("tenderId")[0].value = tender_id;
+        document.getElementsByName("cnbNo")[0].value = cnbno;
     }
 
     function addNotes() {
@@ -283,8 +304,12 @@
         $('[data-toggle="tooltip"]').tooltip();
     });
 
-    function submitView(tender_id)
+    function submitView(tender_id, cnbno, supplier, type)
     {
         document.getElementsByName("tenderId")[0].value = tender_id;
+        document.getElementsByName("cnbNo")[0].value = cnbno;
+        document.getElementsByName("supplier")[0].value = supplier;
+        document.getElementsByName("type")[0].value = type;
+
     }
 </script>

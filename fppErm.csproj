@@ -320,9 +320,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\gasValidator.cs" />
     <Compile Include="Helpers\nhhValidator.cs" />
     <Compile Include="Helpers\Enumerators.cs" />
     <Compile Include="Helpers\LoginValidation.cs" />
+    <Compile Include="Models\Edf\edfModel.cs" />
     <Compile Include="Models\ERMStatuses.cs" />
     <Compile Include="Models\MasErmNetworkModelNHH.cs" />
     <Compile Include="Models\MasErmSupplierModel.cs" />
@@ -340,6 +342,7 @@
     <Compile Include="Models\MasErmTenderModel_1.cs" />
     <Compile Include="Models\MasErmTenderMpanModel_1.cs" />
     <Compile Include="Models\MasErmTenderMsnModel_1.cs" />
+    <Compile Include="Models\Sse\sseSCModel.cs" />
     <Compile Include="Models\supplierListModel.cs" />
     <Compile Include="Models\SuppSubmissionModel.cs" />
     <Compile Include="Models\tmpStartEndDateModel.cs" />
@@ -347,6 +350,7 @@
     <Compile Include="Models\TrnERMRequirementsContractDuration.cs" />
     <Compile Include="Models\TrnERMRequirementsSuppliers.cs" />
     <Compile Include="Models\TrnERMRequirementsUploads.cs" />
+    <Compile Include="Models\TrnERMTenderDetailsGAS.cs" />
     <Compile Include="Models\TrnERMTenderDetailsNHH.cs" />
     <Compile Include="Models\TrnERMTenderNotes_1.cs" />
     <Compile Include="Models\TrnERMTenderStatus_1.cs" />
@@ -443,6 +447,7 @@
     <Content Include="Views\Complete\CompletePage.cshtml" />
     <Content Include="Views\Send\ViewSend.cshtml" />
     <Content Include="Views\Send\SendMail.cshtml" />
+    <Content Include="Views\Analysis\AnalysisPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

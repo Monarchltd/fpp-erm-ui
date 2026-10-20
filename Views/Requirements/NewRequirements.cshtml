@@ -307,16 +307,17 @@
                         </div>
                     </div>
                     <br />
+                    <input type="hidden" id="prevornext" value="0" />
                     <div class="row">
                         <div class="col">
-                            <button href="#" class="btn btn-info btn-sm" formaction="@Url.Action("readXLSX", "Analysis")">< Previous</button>
+                            <button href="#" class="btn btn-info btn-sm" formaction="@Url.Action("readXLSX", "Analysis")" onclick="document.getElementById('prevornext').value = 1;">< Previous</button>
                         </div>
                         <div class="col">
                         </div>
                         <div class="col">
                         </div>
                         <div class="col">
-                            <button type="submit" class="btn btn-success btn-sm" formaction="@Url.Action("CompletePage", "Complete")">&nbsp;Save ></button>
+                            <button type="submit" class="btn btn-success btn-sm" formaction="@Url.Action("CompletePage", "Complete")" onclick="document.getElementById('prevornext').value = 2;">&nbsp;Save ></button>
                         </div>
                     </div>
 
@@ -421,64 +422,64 @@
             //alert(document.getElementById("suppandates").value);
         }
 
-        function submit_page()
-        {
-            var errmessage = "";
+        function submit_page() {
+            var prevnext = document.getElementById("prevornext").value;
 
-            var paymentduration = document.getElementById("req_paymentduration").value;
-
-            if (paymentduration.trim().length <= 0) {
-                errmessage = "Payment duration reqiured.\n"
-            }
-
-            var paymentterms =      document.getElementById("req_paymentterms");
-
-            if (paymentduration.trim().length <= 0) {
-                errmessage += "Payment terms reqiured.\n"
-            }
-
-            var dcda = document.getElementById("req_dcda").value;
-
-            if (dcda.trim().length <= 0) {
-                errmessage += "DC/DA reqiured.\n";
-            }
-
-            var contractduration = document.getElementById("req_contractduration").value;
-
-            if (contractduration.trim().length <= 0) {
-                errmessage += "Contract Start and End Date reqiured.\n";
-            }
-
-            var invitationtotender = document.getElementById("req_invitationtotender").value;
-
-            if (invitationtotender.trim().length <= 0) {
-                errmessage += "No supplier added.\n";
-            }
-
-            var submisssion_deadline = new Date(document.getElementById("txtSelectedDate").value);
-
-            if (submisssion_deadline == "Invalid Date") {
-                errmessage += "No Submission Deadline added.\n";
-            }
-
-            var lvalue = document.getElementById("suppandates").value;
-
-            if (lvalue == 1)
+            if (prevnext == "2")
             {
-                document.getElementById("suppandates").value = "0";
-                return true;
-            }
-            else
-            {
-                if (errmessage.trim().length > 0)
-                {
-                    alert(errmessage);
-                    document.getElementById("suppandates").value = "0";
-                    return false;
+                var errmessage = "";
+
+                var paymentduration = document.getElementById("req_paymentduration").value;
+
+                if (paymentduration.trim().length <= 0) {
+                    errmessage = "Payment duration reqiured.\n"
                 }
-                else
-                {
+
+                var paymentterms = document.getElementById("req_paymentterms");
+
+                if (paymentduration.trim().length <= 0) {
+                    errmessage += "Payment terms reqiured.\n"
+                }
+
+                var dcda = document.getElementById("req_dcda").value;
+
+                if (dcda.trim().length <= 0) {
+                    errmessage += "DC/DA reqiured.\n";
+                }
+
+                var contractduration = document.getElementById("req_contractduration").value;
+
+                if (contractduration.trim().length <= 0) {
+                    errmessage += "Contract Start and End Date reqiured.\n";
+                }
+
+                var invitationtotender = document.getElementById("req_invitationtotender").value;
+
+                if (invitationtotender.trim().length <= 0) {
+                    errmessage += "No supplier added.\n";
+                }
+
+                var submisssion_deadline = new Date(document.getElementById("txtSelectedDate").value);
+
+                if (submisssion_deadline == "Invalid Date") {
+                    errmessage += "No Submission Deadline added.\n";
+                }
+
+                var lvalue = document.getElementById("suppandates").value;
+
+                if (lvalue == 1) {
+                    document.getElementById("suppandates").value = "0";
                     return true;
+                }
+                else {
+                    if (errmessage.trim().length > 0) {
+                        alert(errmessage);
+                        document.getElementById("suppandates").value = "0";
+                        return false;
+                    }
+                    else {
+                        return true;
+                    }
                 }
             }
         }

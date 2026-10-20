@@ -28,16 +28,22 @@ namespace fppErm.Controllers
 
         public ActionResult Index()
         {
-            TempData["actClicked"] = "false";
-            string pagevalue =    Request.Form["routeVals"];
+            string searchclicked =      Request.QueryString["search"] != null ? Request.QueryString["search"] : "0";
 
-            ViewBag.Username =    TempData["username"];
+            TempData["actClicked"] =    "false";
+            string pagevalue =          Request.Form["routeVals"];
+            string searchvalue =        Request.Form["searchvalue"] != null ? Request.Form["searchvalue"] : "";
+            ViewBag.searchvalue =       searchvalue;
 
-            HttpClient client   = new HttpClient();
-            client.BaseAddress  = new Uri(_baseurl);
+            ViewBag.Username =          TempData["username"];
+
+            HttpClient client   =       new HttpClient();
+            client.BaseAddress  =       new Uri(_baseurl);
+
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            HttpResponseMessage response = client.GetAsync("Tender").Result;
+            HttpResponseMessage response = searchclicked.Equals("0") ? client.GetAsync("Tender").Result :
+                                                                       client.GetAsync("Tender/SearchTender?tenderid="+ searchvalue + "&cnbno=" + searchvalue).Result;
 
             ViewBag.Tenders = null;
 
@@ -50,8 +56,8 @@ namespace fppErm.Controllers
                 {
                     switch (tndr.MasErmTenderModel_s.supplytype)
                     {
-                        case "1": tndr.MasErmTenderModel_s.supplytype = "Ele-HH"; break;
-                        case "2": tndr.MasErmTenderModel_s.supplytype = "Ele-NHH";  break;
+                        case "1": tndr.MasErmTenderModel_s.supplytype = "HH"; break;
+                        case "2": tndr.MasErmTenderModel_s.supplytype = "NHH";  break;
                         case "3": tndr.MasErmTenderModel_s.supplytype = "Gas";      break;
                         default:  tndr.MasErmTenderModel_s.supplytype = "Error";    break;
                     }

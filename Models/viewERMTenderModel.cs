@@ -15,6 +15,7 @@ namespace DotNet8.WebApi.Factory.Model
         public List<TrnERMRequirementsContractDuration>  ermContractDuration { get; set; }
         public List<TrnERMTenderNotes_1>                 ermNotes { get; set; }
         public List<TrnERMTenderStatus_1>                ermStatus { get; set; }
+        public List<TrnERMTenderDetailsGAS> ermDetailGAS { get; set; }
 
     }
 }

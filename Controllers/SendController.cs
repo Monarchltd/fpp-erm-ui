@@ -44,6 +44,8 @@ namespace fppErm.Controllers
                 var res =                       response.Content.ReadFromJsonAsync<viewERMTenderModel>().Result;
                 nhh nhh = new nhh();
                 ViewBag.nhhHeader =             nhh.nhhHeaders;
+                gas gas = new gas();
+                ViewBag.gasHeader =             gas.gasHeaders;
 
                 if (res.ermTender.fueltype != null)
                 {

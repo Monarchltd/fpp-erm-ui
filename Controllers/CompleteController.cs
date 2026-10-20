@@ -52,6 +52,9 @@ namespace fppErm.Controllers
 
             nhh n =                         new nhh();
             ViewBag.nhhHeader =             n.nhhHeaders;
+            gas g =                         new gas();
+            ViewBag.gasHeader =             g.gasHeaders;
+
             var suppliers =                 (List<SuppSubmissionModel>)TempData["SuppSubmissionModel"];
 
             var newTender =                 (NewTenderModel)TempData["NEWTENDER"];
@@ -335,46 +338,96 @@ namespace fppErm.Controllers
 
             //MSN.
             //update the null fields to call the api.
-            List<TrnERMTenderDetailsNHH> tenderAnalysis = new List<TrnERMTenderDetailsNHH>();
-
-            try
+            if (newTender.uploadPage.supplytype == "1" || newTender.uploadPage.supplytype == "2")
             {
-                tenderAnalysis =    model.TrnERMTenderDetails;
+                List<TrnERMTenderDetailsNHH> tenderAnalysis = new List<TrnERMTenderDetailsNHH>();
 
-                //get the current supplier.
-                var cSupplst  =     tenderAnalysis.AsEnumerable().Select(x => x.Supplier.Trim()).Distinct().ToList();
-                var cSuppname =     String.Join(", ", cSupplst.ToArray());
-                string cSuppid =    String.Empty;
-
-                foreach (string s in cSupplst)
+                try
                 {
-                    cSuppid += supplierList.Where(x => x.Text.Contains(s)).Select(x => x.Value).FirstOrDefault().ToString() + ",";
+                    tenderAnalysis = model.TrnERMTenderDetails;
+
+                    //get the current supplier.
+                    var cSupplst = tenderAnalysis.AsEnumerable().Select(x => x.Supplier.Trim()).Distinct().ToList();
+                    var cSuppname = String.Join(", ", cSupplst.ToArray());
+                    string cSuppid = String.Empty;
+
+                    foreach (string s in cSupplst)
+                    {
+                        cSuppid += supplierList.Where(x => x.Text.Contains(s)).Select(x => x.Value).FirstOrDefault().ToString() + ",";
+                    }
+
+                    ViewBag.CurrentSupplier = cSuppname;
+
+                    int idx = 0;
+                    while (idx < tenderAnalysis.Count)
+                    {
+                        string suupliername = tenderAnalysis[idx].Supplier.Trim();
+                        tenderAnalysis[idx].Supplier = supplierList.Where(x => x.Text.Contains(suupliername)).Select(x => x.Value).FirstOrDefault().ToString();
+                        tenderAnalysis[idx].MasErmTender = res.id;
+                        tenderAnalysis[idx].cusr = username;
+                        tenderAnalysis[idx].uusr = "";
+                        tenderAnalysis[idx].isActive = 1;
+                        idx++;
+                    }
+
+                    content = JsonContent.Create(tenderAnalysis);
+                    response = client.PostAsync("diTrnERMTenderDetails/InsertAnalysis", content).Result;
                 }
-
-                ViewBag.CurrentSupplier = cSuppname;
-
-                int idx = 0;
-                while(idx < tenderAnalysis.Count)
+                catch (Exception ex)
                 {
-                    string suupliername =               tenderAnalysis[idx].Supplier.Trim();
-                    tenderAnalysis[idx].Supplier =      supplierList.Where(x => x.Text.Contains(suupliername)).Select(x => x.Value).FirstOrDefault().ToString();
-                    tenderAnalysis[idx].MasErmTender =  res.id;
-                    tenderAnalysis[idx].cusr =          username;
-                    tenderAnalysis[idx].uusr =          "";
-                    tenderAnalysis[idx].isActive =      1;
-                    idx++;
-                }
 
-                content =                                       JsonContent.Create(tenderAnalysis);
-                response =                                      client.PostAsync("diTrnERMTenderDetails/InsertAnalysis", content).Result;
+                }
             }
-            catch (Exception ex)
+            else if (newTender.uploadPage.supplytype == "3")
             {
+                List<TrnERMTenderDetailsGAS> tenderAnalysis = new List<TrnERMTenderDetailsGAS>();
+
+                try
+                {
+                    tenderAnalysis = model.TrnERMTenderDetailsGAS;
+
+                    //get the current supplier.
+                    var cSupplst =  tenderAnalysis.AsEnumerable().Select(x => x.SuppId.Trim()).Distinct().ToList();
+                    var cSuppname = String.Join(", ", cSupplst.ToArray());
+                    string cSuppid = String.Empty;
+
+                    foreach (string s in cSupplst)
+                    {
+                        var tmp = supplierList.Where(x => x.Text.Contains(s)).Select(x => x.Value).FirstOrDefault();
+
+                        if (tmp != null)
+                        {
+                            cSuppid += tmp.ToString() + ",";
+                        }
+                    }
+
+                    ViewBag.CurrentSupplier = cSuppname;
+
+                    int idx = 0;
+                    while (idx < tenderAnalysis.Count)
+                    {
+                        string suupliername =               tenderAnalysis[idx].SuppId.Trim();
+                        tenderAnalysis[idx].SuppId =        supplierList.Where(x => x.Text.Contains(suupliername)).Select(x => x.Value).FirstOrDefault().ToString();
+                        tenderAnalysis[idx].MasErmTender =  res.id;
+                        tenderAnalysis[idx].cusr =          username;
+                        tenderAnalysis[idx].uusr =          "";
+                        tenderAnalysis[idx].isActive =      1;
+                        idx++;
+                    }
+
+                    content =   JsonContent.Create(tenderAnalysis);
+                    response =  client.PostAsync("diTrnERMTenderDetails/InsertGasAnalysis", content).Result;
+                }
+                catch (Exception ex)
+                {
+
+                }
 
             }
 
             TempData["username"] =  username;
             ViewBag.Username =      username;
+            ViewBag.Tender =     newTender;
 
             List<string> fueltype = new List<string>();
             if (newTender.uploadPage.fueltype != null)

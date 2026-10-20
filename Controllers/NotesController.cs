@@ -35,10 +35,13 @@ namespace fppErm.Controllers
             var notes_new =         Request.Form["notesNew"];
             var notes_update =      Request.Form["notesUpdate"];
             var notes_his =         Request.Form["notesHistory"];
+            var cnbno =             Request.Form["cnbNo"] != null ? Request.Form["cnbNo"] : "";
+
 
             //TempData["notes"] =     "False";
-            TempData["TenderId"] =  tender_id;
-            TempData["iconClicked"] = "notes";
+            TempData["TenderId"] =      tender_id;
+            TempData["iconClicked"] =   "notes";
+            TempData["CnbNo"] =         cnbno;
 
 
             if (notes_update.Equals("true"))

@@ -1,0 +1,280 @@
+﻿
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"></script>
+
+<style>
+    .tableFixHead {
+        overflow: auto;
+        height: 100px;
+    }
+
+        .tableFixHead thead th {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+    /* Just common table stuff. Really. */
+    table {
+        border - collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        padding: 8px 16px;
+    }
+
+    th {
+        background: #eee;
+    }
+
+    h6 {
+        width: 100%;
+        text-align: center;
+        border-bottom: 1px solid #000;
+        line-height: 0.1em;
+    }
+
+        h6 span {
+            background: #fff;
+            padding: 0 10px;
+        }
+</style>
+
+<main aria-labelledby="title">
+    @using (Html.BeginForm("AnalysisPage", "Analysis", FormMethod.Post, new { enctype = "multipart/form-data", @class = "was-validated" }))
+    {
+
+        <div class="card text-left">
+            <div class="card-header">
+                <h5 class="card-title">Tender Analysis</h5>
+                <div class="row">
+                    <div class="col">
+                        CNB No  :
+                    </div>
+                    <div class="col">
+                        <input type="hidden" name="CnbNo" value="@TempData["CnbNo"]"/>
+                        <font color="brown">@TempData["CnbNo"]</font>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        Supplier:
+                    </div>
+                    <div class="col">
+                        <input type="hidden" name="supplier" value="@TempData["supplier"]" />
+                        <font color="brown">@TempData["supplier"]</font><br />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        Type    :
+                    </div>
+                    <div class="col">
+                        <input type="hidden" name="type" value="@TempData["type"]" />
+                        <font color="brown">@TempData["type"]</font>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="completed" class="container tab-pane active">
+
+                    <div class="row" style="background-color:aliceblue">
+                        <h6><span> Analysis</span></h6>
+                        <div class="col">
+                            <b>Upload client pricing file</b>
+                        </div>
+                        <div class="col">
+                            @*<b>24 Month Period</b>*@
+                        </div>
+                        <div class="col">
+                            @*<b>36 Month Period</b>*@
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <input class="form-control form-control-sm" id="formFileSm" name="monthfile12" type="file" text="@{ if (@ViewBag.NewTender != null)
+                                { @ViewBag.NewTender.uploadPage.uploadedFile;
+                                } }">
+                            <div class="invalid-feedback">File upload, required !</div>
+                        </div>
+                        <div class="col">
+                            <button href="#" type="submit" class="btn btn-primary btn-sm">Price Loader</button>
+                            @*<label for="formFileSm" class="form-label">Client Pricing file</label>
+                <input class="form-control form-control-sm" id="formFileSm" name="monthfile24" type="file" text="@{ if (@ViewBag.NewTender != null)
+                    { @ViewBag.NewTender.uploadPage.uploadedFile;
+                    } }">
+                <div class="invalid-feedback">File upload, required !</div>*@
+                        </div>
+                        <div class="col">
+                            @*<label for="formFileSm" class="form-label">Client Pricing file</label>
+                <input class="form-control form-control-sm" id="formFileSm" name="monthfile36" type="file" text="@{ if (@ViewBag.NewTender != null)
+                    { @ViewBag.NewTender.uploadPage.uploadedFile;
+                    } }">
+                <div class="invalid-feedback">File upload, required !</div>*@
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                        </div>
+                        <div class="col">
+                        </div>
+                        <div class="col">
+                        </div>
+                    </div>
+
+                    <div class="row" style="background-color:aliceblue">
+                        <div class="col">
+                        </div>
+                        <div class="col">
+                        </div>
+                        <div class="col">
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row" style="background-color:aliceblue">
+                        <h6><span> Price Loader</span></h6>
+                        <div class="row">
+                            <div class="col">
+                                <label>12 Months</label>
+                                <div class="tableFixHead" style="height: 300px; overflow-x: auto;">
+                                    <table class="table-sm table-bordered table-striped mb-0 text-nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">MPAN Core</th>
+                                                <th scope="col">Day</th>
+                                                <th scope="col">Night</th>
+                                                <th scope="col">Evening</th>
+                                                <th scope="col">Standing Charge</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                if (@ViewBag.Result1 != null)
+                                                {
+                                                    foreach (var item in ViewBag.Result1)
+                                                    {
+                                                        <tr>
+                                                            <td>@item.mpan</td>
+                                                            <td>@item.day</td>
+                                                            <td>@item.evening</td>
+                                                            <td>@item.night</td>
+                                                            <td>@item.standing_charge</td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <label>24 Months</label>
+                                <div class="tableFixHead" style="height: 300px; overflow-x: auto;">
+                                    <table class="table-sm table-bordered table-striped mb-0 text-nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">MPAN Core</th>
+                                                <th scope="col">Day</th>
+                                                <th scope="col">Night</th>
+                                                <th scope="col">Evening</th>
+                                                <th scope="col">Standing Charge</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                if (@ViewBag.Result2 != null)
+                                                {
+                                                    foreach (var item in ViewBag.Result2)
+                                                    {
+                                                        <tr>
+                                                            <td>@item.mpan</td>
+                                                            <td>@item.day</td>
+                                                            <td>@item.evening</td>
+                                                            <td>@item.night</td>
+                                                            <td>@item.standing_charge</td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <label>36 Months</label>
+                                <div class="tableFixHead" style="height: 300px; overflow-x: auto;">
+                                    <table class="table-sm table-bordered table-striped mb-0 text-nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">MPAN Core</th>
+                                                <th scope="col">Day</th>
+                                                <th scope="col">Night</th>
+                                                <th scope="col">Evening</th>
+                                                <th scope="col">Standing Charge</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                if (@ViewBag.Result3 != null)
+                                                {
+                                                    foreach (var item in ViewBag.Result3)
+                                                    {
+                                                        <tr>
+                                                            <td>@item.mpan</td>
+                                                            <td>@item.day</td>
+                                                            <td>@item.evening</td>
+                                                            <td>@item.night</td>
+                                                            <td>@item.standing_charge</td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <br />
+                    @{
+                        if (ViewBag.analyProc == true)
+                        {
+                            <button href="#" type="submit" class="btn btn-success btn-sm" formaction="@Url.Action("AnalysisPage", "Analysis", new {download="1"} )">
+                                Download Analysis Template
+                            </button>
+                        }
+                    }
+
+                </div>
+            </div>
+        </div>
+    <div class="card-footer text-muted">
+    @{ 
+        if (@ViewBag.Message != null)
+        {
+            <label>@ViewBag.Message</label>
+        }
+    }
+
+    </div>
+
+    }
+
+    <script type="text/javascript">
+
+    </script>
+</main>

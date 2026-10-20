@@ -106,5 +106,48 @@ namespace fppErm.Helpers
             "ERM Remarks",
         };
     }
-    
+
+    public class gas
+    {
+        public List<string> gasHeaders = new List<string>()
+        {
+            "Location Ref",
+            "Client Ref",
+            "Address1",
+            "Address2",
+            "Address3",
+            "Address4",
+            "Address5",
+            "Post Code",
+            "MSN",
+            "MPRN",
+            "kWh",
+            "Start Date",
+            "Payment Method",
+            "Payment Duration",
+            "Supplier",
+            "Last Bill date",
+            "Last Bill Date Supplier",
+            "Standing Charge(pence/day)",
+            "Day Rate",
+            "Peak Decjan",
+            "Peak Novfeb",
+            "Peak Other",
+            "Offpeak ",
+            "Other",
+            "DistributionCommodity(pence/day)",
+            "MeteringCharge (pence/day)",
+            "DistributionSystemCapacity (pence/day)",
+            "ManagementFee (pence/day)",
+            "DistributionFixed (pence/day)",
+            "UnidentifiedGas (pence/day)",
+            "TransportationFee (pence/day)",
+            "AMRCharge (pence/day)",
+            "DistributionCustomerCapacity (pence/day)",
+            "Site Fee(pence/day)",
+            "Remarks",
+            "ERM Remarks",
+        };
+    }
+
 }

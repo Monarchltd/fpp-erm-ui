@@ -33,9 +33,11 @@ namespace fppErm.Controllers
         public ActionResult StatusPage()
         {
             var tender_id =             Request.Form["tenderId"];
+            var cnbno =                 Request.Form["cnbNo"] != null ? Request.Form["cnbNo"] : "";
             var status_update =         Request.Form["statusUpdate"];
             TempData["iconClicked"] =   "status";
             TempData["TenderId"] =      tender_id;
+            TempData["CnbNo"] =         cnbno;
 
             var statusId =              Request.Form["statusId"];
 

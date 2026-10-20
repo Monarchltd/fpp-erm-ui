@@ -328,92 +328,165 @@
                 <br />
                 <div class="row">
                     <h6><span>Location / Meter uploaded details</span></h6>
-                    <div class="tableFixHead" style="height: 300px; overflow-x: auto;">
-                        <table class="table-sm table-bordered table-striped mb-0 text-nowrap">
-                            <thead>
-                                <tr>
-                                    @{
-                                        foreach (string header in @ViewBag.nhhHeader)
-                                        {
-                                            <th scope="col">@header</th>
-                                        }
-                                    }
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @{
-                                    foreach (var item in ViewBag.Result.ermDetailNHH)
-                                    {
-                                        <tr>
-                                            <td>@item.Location_Ref</td>
-                                            <td>@item.Client_Ref</td>
-                                            <td>@item.Address1</td>
-                                            <td>@item.Address2</td>
-                                            <td>@item.Address3</td>
-                                            <td>@item.Address4</td>
-                                            <td>@item.Address5</td>
-                                            <td>@item.Postcode</td>
-                                            <td>@item.Msn</td>
-                                            <td>@item.Mpanfull</td>
-                                            <td>@item.Profile</td>
-                                            <td>@item.Mtc</td>
-                                            <td>@item.Llf</td>
-                                            <td>@item.Distributor_ID</td>
-                                            <td>@item.Mpan_Core</td>
-                                            <td>@item.Mpan_Status</td>
-                                            <td>@item.Day_kWh</td>
-                                            <td>@item.Night_kWh</td>
-                                            <td>@item.Evening_kWh</td>
-                                            <td>@item.Peak_kWh</td>
-                                            <td>@item.OffPeak_kWh</td>
-                                            <td>@item.Total_kWh</td>
-                                            <td>@item.kVa</td>
-                                            <td>@item.Start_Date</td>
-                                            <td>@item.Payment_Method</td>
-                                            <td>@item.Payment_Duration</td>
-                                            <td>@item.Supplier</td>
-                                            <td>@item.LastBill_Date</td>
-                                            <td>@item.LastBill_Date_Supplier</td>
-                                            <td>@item.StandingCharge_penceorday</td>
-                                            <td>@item.DayRate</td>
-                                            <td>@item.NightRate</td>
-                                            <td>@item.EveningRate</td>
-                                            <td>@item.AvailRate</td>
-                                            <td>@item.PeakDecjan</td>
-                                            <td>@item.PeakNovfeb</td>
-                                            <td>@item.PeakOther</td>
-                                            <td>@item.OffPeak</td>
-                                            <td>@item.Other</td>
-                                            <td>@item.MeteringCharge_penceorday</td>
-                                            <td>@item.COMMSCharge_penceorday</td>
-                                            <td>@item.SettlementAgencyCharge_penceorday</td>
-                                            <td>@item.MeterAdministratorAgentCharge_penceorday</td>
-                                            <td>@item.NonEnergy_penceorday</td>
-                                            <td>@item.UMSCharge_penceorday</td>
-                                            <td>@item.TNUosFixedDailyCharge_penceorday</td>
-                                            <td>@item.IntelligentAnalytics_penceorday</td>
-                                            <td>@item.RenewableObligation_penceorday</td>
-                                            <td>@item.NuclearRABLevy_penceorday</td>
-                                            <td>@item.AMRCharge_penceorday</td>
-                                            <td>@item.MeterAssetProviderMAPCharge_penceorday</td>
-                                            <td>@item.DataCollectorDataAggregator_penceorday</td>
-                                            <td>@item.MSPUnitCharge_penceorday</td>
-                                            <td>@item.MeterServiceAdvancedCharge_penceorday</td>
-                                            <td>@item.SiteFee_penceorday</td>
-                                            <td>@item.DayAheadPremium_penceorday</td>
-                                            <td>@item.REGO_penceorday</td>
-                                            <td>@item.CfdCharge_penceorday</td>
-                                            <td>@item.GreengasLevyCharge_penceorday</td>
-                                            <td>@item.DataServicesAdvanced_penceorday</td>
-                                            <td>@item.Remarks</td>
-                                            <td>@item.ERMRemarks</td>
-                                        </tr>
-                                    }
-                                }
 
-                            </tbody>
-                        </table>
-                    </div>
+                    @{
+                        if (ViewBag.Result.ermDetailNHH != null)
+                        {
+                            <div class="tableFixHead" style="height: 300px; overflow-x: auto;">
+                                <table class="table-sm table-bordered table-striped mb-0 text-nowrap">
+                                    <thead>
+                                        <tr>
+                                            @{
+                                                foreach (string header in @ViewBag.nhhHeader)
+                                                {
+                                                    <th scope="col">@header</th>
+                                                }
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            foreach (var item in ViewBag.Result.ermDetailNHH)
+                                            {
+                                                <tr>
+                                                    <td>@item.Location_Ref</td>
+                                                    <td>@item.Client_Ref</td>
+                                                    <td>@item.Address1</td>
+                                                    <td>@item.Address2</td>
+                                                    <td>@item.Address3</td>
+                                                    <td>@item.Address4</td>
+                                                    <td>@item.Address5</td>
+                                                    <td>@item.Postcode</td>
+                                                    <td>@item.Msn</td>
+                                                    <td>@item.Mpanfull</td>
+                                                    <td>@item.Profile</td>
+                                                    <td>@item.Mtc</td>
+                                                    <td>@item.Llf</td>
+                                                    <td>@item.Distributor_ID</td>
+                                                    <td>@item.Mpan_Core</td>
+                                                    <td>@item.Mpan_Status</td>
+                                                    <td>@item.Day_kWh</td>
+                                                    <td>@item.Night_kWh</td>
+                                                    <td>@item.Evening_kWh</td>
+                                                    <td>@item.Peak_kWh</td>
+                                                    <td>@item.OffPeak_kWh</td>
+                                                    <td>@item.Total_kWh</td>
+                                                    <td>@item.kVa</td>
+                                                    <td>@item.Start_Date</td>
+                                                    <td>@item.Payment_Method</td>
+                                                    <td>@item.Payment_Duration</td>
+                                                    <td>@item.Supplier</td>
+                                                    <td>@item.LastBill_Date</td>
+                                                    <td>@item.LastBill_Date_Supplier</td>
+                                                    <td>@item.StandingCharge_penceorday</td>
+                                                    <td>@item.DayRate</td>
+                                                    <td>@item.NightRate</td>
+                                                    <td>@item.EveningRate</td>
+                                                    <td>@item.AvailRate</td>
+                                                    <td>@item.PeakDecjan</td>
+                                                    <td>@item.PeakNovfeb</td>
+                                                    <td>@item.PeakOther</td>
+                                                    <td>@item.OffPeak</td>
+                                                    <td>@item.Other</td>
+                                                    <td>@item.MeteringCharge_penceorday</td>
+                                                    <td>@item.COMMSCharge_penceorday</td>
+                                                    <td>@item.SettlementAgencyCharge_penceorday</td>
+                                                    <td>@item.MeterAdministratorAgentCharge_penceorday</td>
+                                                    <td>@item.NonEnergy_penceorday</td>
+                                                    <td>@item.UMSCharge_penceorday</td>
+                                                    <td>@item.TNUosFixedDailyCharge_penceorday</td>
+                                                    <td>@item.IntelligentAnalytics_penceorday</td>
+                                                    <td>@item.RenewableObligation_penceorday</td>
+                                                    <td>@item.NuclearRABLevy_penceorday</td>
+                                                    <td>@item.AMRCharge_penceorday</td>
+                                                    <td>@item.MeterAssetProviderMAPCharge_penceorday</td>
+                                                    <td>@item.DataCollectorDataAggregator_penceorday</td>
+                                                    <td>@item.MSPUnitCharge_penceorday</td>
+                                                    <td>@item.MeterServiceAdvancedCharge_penceorday</td>
+                                                    <td>@item.SiteFee_penceorday</td>
+                                                    <td>@item.DayAheadPremium_penceorday</td>
+                                                    <td>@item.REGO_penceorday</td>
+                                                    <td>@item.CfdCharge_penceorday</td>
+                                                    <td>@item.GreengasLevyCharge_penceorday</td>
+                                                    <td>@item.DataServicesAdvanced_penceorday</td>
+                                                    <td>@item.Remarks</td>
+                                                    <td>@item.ERMRemarks</td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        }
+                        else if (ViewBag.Result.ermDetailGAS != null)
+                        {
+                            <div class="row">
+                                <div class="tableFixHead" style="height: 300px; overflow-x: auto;">
+                                    <table class="table-sm table-bordered table-striped mb-0 text-nowrap">
+                                        <thead>
+                                            <tr>
+                                                @{
+                                                    foreach (string header in @ViewBag.gasHeader)
+                                                    {
+                                                        <th scope="col">@header</th>
+                                                    }
+                                                }
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                foreach (var item in ViewBag.Analysis.TrnERMTenderDetailsGAS)
+                                                {
+                                                    <tr>
+                                                        <td>@item.Location_Ref</td>
+                                                        <td>@item.Client_Ref</td>
+                                                        <td>@item.Address1</td>
+                                                        <td>@item.Address2</td>
+                                                        <td>@item.Address3</td>
+                                                        <td>@item.Address4</td>
+                                                        <td>@item.Address5</td>
+                                                        <td>@item.Postcode</td>
+                                                        <td>@item.Msn</td>
+                                                        <td>@item.Mprn</td>
+                                                        <td>@item.kWh</td>
+                                                        <td>@item.Startdate</td>
+                                                        <td>@item.Payment_method</td>
+                                                        <td>@item.Payment_duration</td>
+                                                        <td>@item.SuppId</td>
+                                                        <td>@item.Last_bill_date</td>
+                                                        <td>@item.Last_bill_date_supp</td>
+                                                        <td>@item.Standing_charge_penceperday</td>
+                                                        <td>@item.Day_Rate</td>
+                                                        <td>@item.Peak_Decjan</td>
+                                                        <td>@item.Peak_Novfeb</td>
+                                                        <td>@item.Peak_Other</td>
+                                                        <td>@item.Offpeak</td>
+                                                        <td>@item.Other</td>
+                                                        <td>@item.DistCommodity_penceperday</td>
+                                                        <td>@item.MeteringCharge_penceperday</td>
+                                                        <td>@item.DistributionSystemCapacity_penceperday</td>
+                                                        <td>@item.ManagementFee_penceprday</td>
+                                                        <td>@item.DistFixed_penceperday</td>
+                                                        <td>@item.Unidentifiedgas_penceperday</td>
+                                                        <td>@item.TransportFee_penceperday</td>
+                                                        <td>@item.AMRCharge_penceperday</td>
+                                                        <td>@item.DistCustomerCapacity_penceprday</td>
+                                                        <td>@item.SiteFee_penceprday</td>
+                                                        <td>@item.Remarks</td>
+                                                        <td>@item.ERMRemarks</td>
+                                                    </tr>
+                                                }
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        }
+                    }
+
                 </div>
             </div>
         </div>
