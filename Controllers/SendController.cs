@@ -29,12 +29,19 @@ namespace fppErm.Controllers
             _client.BaseAddress = new Uri(_baseurl);
 
         }
+
+        [HttpPost]
         public ActionResult ViewSend()
         {
-            string tender_id = Request.Form["tenderId"].ToString();
-            ViewBag.Username = TempData["username"];
+            string tender_id =  Request.Form["tenderId"] != null ? Request.Form["tenderId"].ToString() : TempData["tenderId"].ToString();
+            var dwnFlag =       Request.QueryString["download"] != null ? Request.QueryString["download"] : "0";
+            string tref =       Request.QueryString["tref"] != null ? Request.QueryString["tref"] : "0";
+            string fname =      Request.QueryString["fname"] != null ? Request.QueryString["fname"] : "0";
+            ViewBag.Username =  TempData["username"];
+            TempData["tenderId"] = tender_id;
 
             ViewBag.id = tender_id;
+
 
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -88,6 +95,24 @@ namespace fppErm.Controllers
             TempData["username"] =      ViewBag.Username;
             TempData["iconClicked"] =   "";
 
+            ViewBag.Result.ermTender.commission =         Math.Round(ViewBag.Result.ermTender.commission, 3);
+            ViewBag.Result.ermRequirements.PaymentTerms = ViewBag.Result.ermRequirements.PaymentTerms.Equals("1") ? "BACS" :
+                                                           ViewBag.Result.ermRequirements.PaymentTerms.Equals("2") ? "DD" : "";
+            ViewBag.Result.ermRequirements.EnergyType =   ViewBag.Result.ermRequirements.EnergyType.Equals("1") ? "Electricity" :
+                                                           ViewBag.Result.ermRequirements.EnergyType.Equals("2") ? "Electricity" :
+                                                            ViewBag.Result.ermRequirements.EnergyType.Equals("3") ? "Gas" : "";
+
+            if (dwnFlag == "1")
+            {
+                try
+                {
+                    return Download(tref, fname);
+                }
+                catch (Exception ex)
+                {
+                }
+            }
+
             return View();
 
         }
@@ -106,16 +131,38 @@ namespace fppErm.Controllers
             {
                 TempData["username"] =      ViewBag.Username;
                 TempData["iconClicked"] =   "";
+                string bacsordd =           String.Empty;
 
                 if (Convert.ToInt32(tender_id) > 0)
                 {
-                    HttpResponseMessage response = _client.GetAsync("getTenderDetails/getTender?id=" + Convert.ToDouble(tender_id)).Result;
-                    var res = response.Content.ReadFromJsonAsync<viewERMTenderModel>().Result;
-                    TempData["sendEmail"] = res;
-                    nhh nhh = new nhh();
-                    ViewBag.nhhHeader = nhh.nhhHeaders;
-                    ViewBag.Result = res;
-                    ViewBag.Sitecount = res.ermDetailNHH.Count;
+                    HttpResponseMessage response =  _client.GetAsync("getTenderDetails/getTender?id=" + Convert.ToDouble(tender_id)).Result;
+                    var res =                       response.Content.ReadFromJsonAsync<viewERMTenderModel>().Result;
+                    TempData["sendEmail"] =         res;
+                    nhh nhh =                       new nhh();
+                    ViewBag.nhhHeader =             nhh.nhhHeaders;
+
+                    if (res != null)
+                    {
+                        res.ermTender.fillers = res.ermTender.fillers == "Y" ? "Monarch" : res.ermTender.fillers;
+                        //Validate BACS and DD
+                        bacsordd =                          res.ermRequirements.PaymentTerms == "1" ? "BACS" : "DD";
+                        string chkbacsordd = String.Empty;
+
+                        if (res.ermTender.supplytype == "3")
+                        {
+                            chkbacsordd = res.ermDetailGAS[0] != null ? res.ermDetailGAS[0].Payment_method.Trim() : "";
+                        }
+                        else
+                        {
+                            chkbacsordd = res.ermDetailNHH[0] != null ? res.ermDetailNHH[0].Payment_Method.Trim() : "";
+                        }
+
+                        res.ermRequirements.PaymentTerms =  bacsordd;
+                        ViewBag.Bacsordd_valid =            (bacsordd == chkbacsordd) ? "Match - "+ chkbacsordd : "Not Matching - "+ chkbacsordd;
+                    }
+
+                    ViewBag.Result =                res;
+                    ViewBag.Sitecount =             res.ermDetailNHH.Count;
 
                     string fueltype = res.ermTender.fueltype.ToString();
 
@@ -146,6 +193,12 @@ namespace fppErm.Controllers
 
                     string mailto =         emails.Where(i => i.ToLower().Contains(searchname.ToLower())).FirstOrDefault();
                     var res =               (viewERMTenderModel)TempData["sendEmail"];
+
+                    if (res != null)
+                    {
+                        res.ermTender.fillers = res.ermTender.fillers == "Y" ? "Monarch" : res.ermTender.fillers;
+                    }
+
                     ViewBag.Result =        res;
                     TempData["sendEmail"] = res;
                     ViewBag.id =            res.ermTender.id;
@@ -266,5 +319,17 @@ namespace fppErm.Controllers
             return retval;
         }
 
+
+        [HttpPost]
+        public ActionResult Download(string tenderref, string fname)
+        {
+            string path = Path.Combine(Server.MapPath("~\\Uploads"), tenderref, fname);
+
+            //Read the File data into Byte Array.
+            byte[] bytes = System.IO.File.ReadAllBytes(path);
+
+            //Send the File to Download.
+            return File(bytes, "application/octet-stream", fname);
+        }
     }
 }

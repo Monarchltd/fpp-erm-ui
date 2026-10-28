@@ -427,7 +427,7 @@ namespace fppErm.Controllers
 
             TempData["username"] =  username;
             ViewBag.Username =      username;
-            ViewBag.Tender =     newTender;
+            ViewBag.Tender =        newTender;
 
             List<string> fueltype = new List<string>();
             if (newTender.uploadPage.fueltype != null)
@@ -461,6 +461,10 @@ namespace fppErm.Controllers
                 case "3": ViewBag.HhnhhGas = "Gas"; break;
                 default: break;
             }
+
+            #region Coversion.
+            ViewBag.NewTender.commission = Math.Round(ViewBag.NewTender.commission, 3);
+            #endregion Conversion.
 
             return View();
         }

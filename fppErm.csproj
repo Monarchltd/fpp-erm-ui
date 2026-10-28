@@ -325,6 +325,7 @@
     <Compile Include="Helpers\Enumerators.cs" />
     <Compile Include="Helpers\LoginValidation.cs" />
     <Compile Include="Models\Edf\edfModel.cs" />
+    <Compile Include="Models\MultiSuppAnaModel.cs" />
     <Compile Include="Models\ERMStatuses.cs" />
     <Compile Include="Models\MasErmNetworkModelNHH.cs" />
     <Compile Include="Models\MasErmSupplierModel.cs" />
@@ -448,6 +449,7 @@
     <Content Include="Views\Send\ViewSend.cshtml" />
     <Content Include="Views\Send\SendMail.cshtml" />
     <Content Include="Views\Analysis\AnalysisPage.cshtml" />
+    <Content Include="Views\Analysis\MultiAnalysisPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

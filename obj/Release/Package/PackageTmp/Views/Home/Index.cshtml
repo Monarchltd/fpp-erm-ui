@@ -126,18 +126,19 @@
                                     <td>@item.MasErmSupplierModel_s.name</td>
                                     <td>@item.MasErmTenderModel_s.supplytype</td>
                                     @*<td>@item.MasErmTenderModel_s.consultantname</td>*@
-                                    <td>
-                                        @item.MasErmTenderModel_s.commission
-                                        @{ if (@item.MasErmTenderModel_s.commission_type == "1")
-                                            {
-                                                <label>£/pa</label>
-                                            }
-                                            else if (@item.MasErmTenderModel_s.commission_type == "2")
-                                            {
-                                                <label>p/kwh</label>
-                                            }
+                                <td>
+
+                                    @{ if (@item.MasErmTenderModel_s.commission_type == "1")
+                                        {
+                                            <label>£@item.MasErmTenderModel_s.commission&nbsp;pa</label>
                                         }
-                                    </td>
+                                        else if (@item.MasErmTenderModel_s.commission_type == "2")
+                                        {
+                                            @item.MasErmTenderModel_s.commission
+                                            <label>&nbsp;p/kwh</label>
+                                        }
+                                    }
+                                </td>
                                     <td>@item.TrnERMTenderStatus_s.StatusDesc</td>
                                     <td>@item.VersionId</td>
                                     <td>@item.CreatedBy</td>
@@ -171,9 +172,9 @@
                                             }
 
                                             <button type="submit" data-toggle="tooltip" class="btn btn-warning btn-sm" formaction="@Url.Action("AnalysisPage", "Analysis")" onclick="submitView(@item.id, '@item.CnbNo', '@item.MasErmSupplierModel_s.name', '@item.MasErmTenderModel_s.supplytype');"><span class="bi bi-file-earmark-binary"></span></button>
-                                            <button data-toggle="tooltip" class="btn btn-transparent btn-sm"><span class="bi bi-files"></span></button>
+                                            @*<button data-toggle="tooltip" class="btn btn-transparent btn-sm"><span class="bi bi-files"></span></button>*@
                                             <button type="submit" data-toggle="tooltip" class="btn btn-transparent btn-sm" formaction="@Url.Action("ViewSend", "Send")" onclick="submitView(@item.id, '@item.CnbNo', '@item.MasErmSupplierModel_s.name', '@item.MasErmTenderModel_s.supplytype');"><span class="bi bi-eye-fill"></span></button>
-                                            <button data-toggle="tooltip" class="btn btn-transparent btn-sm"><span class="bi bi-vector-pen"></span></button>
+                                            @*<button data-toggle="tooltip" class="btn btn-transparent btn-sm"><span class="bi bi-vector-pen"></span></button>*@
                                             <button data-toggle="tooltip" class="btn btn-danger btn-sm"><span class="bi bi-trash-fill"></span></button>
                                         </div>
                                     </td>

@@ -3,11 +3,13 @@ using DotNet8.WebApi.Factory.Model;
 using DotNet8.WebApi.Factory.Model.Edf;
 using DotNet8.WebApi.Factory.Model.sse;
 using fppErm.Helpers;
+using fppErm.Models;
 using Microsoft.Graph.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -40,6 +42,7 @@ namespace fppErm.Controllers
         public ActionResult AnalysisPage(HttpPostedFileBase monthfile12, HttpPostedFileBase monthfile24, HttpPostedFileBase monthfile36)
         {
             ViewBag.analyProc = false;
+            ViewBag.Run =       "Run";
             var dwnFlag =       Request.QueryString["download"] != null ? Request.QueryString["download"] : "0";
             var tender_id =     Request.Form["tenderId"] != null ? Request.Form["tenderId"] : TempData["TenderId"];
             var cnbno =         Request.Form["cnbNo"] != null ? Request.Form["cnbNo"] : TempData["CnbNo"];
@@ -61,12 +64,22 @@ namespace fppErm.Controllers
             client.BaseAddress =    new Uri(_baseurl);
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
+            if (supplier.Equals("EDF Energy"))
+            {
+                if (type.Equals("HH") || 
+                    type.Equals("NHH"))
+                {
+                    ViewBag.Run = "Price Loader";
+                }
+            }
+            
+
             if (monthfile12 != null)
             {
                 var uploadPath = Server.MapPath("~/Analysis");
 
-                var fileName =  Path.GetFileName(monthfile12.FileName);
-                var path =      Path.Combine(uploadPath, fileName);
+                var fileName = Path.GetFileName(monthfile12.FileName);
+                var path = Path.Combine(uploadPath, fileName);
 
                 monthfile12.SaveAs(path);
 
@@ -107,7 +120,7 @@ namespace fppErm.Controllers
                     }
 
                 }
-                else if(supplier.Equals("SSE"))
+                else if (supplier.Equals("SSE"))
                 {
                     HttpResponseMessage response = client.GetAsync("analysis\\readData?filepath=" + path + "&tenderid=" + tender_id + "&type=" + type + "&supplier=" + supplier).Result;
 
@@ -151,7 +164,7 @@ namespace fppErm.Controllers
             {
                 try
                 {
-                    return Download();
+                    return Download(tender_id.ToString(), cnbno.ToString(), supplier.ToString(), type.ToString());
                 }
                 catch(Exception ex)
                 {
@@ -531,16 +544,115 @@ namespace fppErm.Controllers
         }
 
         [HttpPost]
-        public ActionResult Download()
+        public ActionResult Download(string tender_id, string cnbno, string supplier, string type)
         {
+            string sourcefilename = String.Empty;
+            string destfilename =   tender_id + "_" + cnbno + "_" + supplier + "_" + type + ".xlsx";
+
+            if (type=="HH" || type=="NHH")
+            {
+                sourcefilename = "Ele_Analysis Template 2026.xlsx";
+            }
+            else
+            {
+                sourcefilename = "Gas_Analysis Template 2026.xlsx";
+            }
+
             //Build the File Path.
-            string path = Path.Combine(Server.MapPath("~/Analysis"), "Temp", "Analysis Template 2026.xlsx");
+            string path = Path.Combine(Server.MapPath("~/Analysis"), "Temp", sourcefilename);
 
             //Read the File data into Byte Array.
             byte[] bytes = System.IO.File.ReadAllBytes(path);
 
             //Send the File to Download.
-            return File(bytes, "application/octet-stream", "Analysis_Template_2026.xlsx");
+            return File(bytes, "application/octet-stream", destfilename);
+        }
+
+        public ActionResult MultiAnalysisPage()
+        {
+            string suppid =         Request.QueryString["suppId"];
+            string suppIdremove =   Request.QueryString["suppIdremove"];
+            string searchclick =    Request.QueryString["searchclick"];
+            string supplytype =     Request.Form["supplytype"];
+
+            var tmpSid =            (List<string>)TempData["suppid"];
+
+            if (searchclick == "1")
+            {
+                tmpSid.Clear();
+            }
+
+            List<string> sid =      new List<string>();
+
+            if (tmpSid != null && suppid != null)
+            {
+                foreach (string s in tmpSid)
+                {
+                    sid.Add(s);
+                }
+                sid.Add(suppid);
+            }
+            if (tmpSid != null && suppIdremove != null)
+            {
+                foreach (string s in tmpSid)
+                {
+                    sid.Add(s);
+                }
+
+                sid.Remove(suppIdremove);
+            }
+            
+            TempData["suppid"] =    sid;
+
+            ViewBag.Username =      TempData["username"];
+
+            HttpClient client =     new HttpClient();
+            client.BaseAddress =    new Uri(_baseurl);
+
+            int stype = supplytype != null ? supplytype == "HH" ? 1 : supplytype == "NHH" ? 2 : 3 : 1;
+
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            HttpResponseMessage response = client.GetAsync("Tender/SearchTenderwithEnergytype?type=" + stype).Result;
+
+            ViewBag.Tenders = null;
+
+            if (response.IsSuccessStatusCode)
+            {
+                var tenders =       response.Content.ReadFromJsonAsync<IEnumerable<MasErmTenderHeaderModel>>().Result;
+                ViewBag.Tenders =   tenders;
+
+                List<MultiSuppAnaModel> msa = new List<MultiSuppAnaModel>();
+
+                foreach (var tender in tenders)
+                {
+                    msa.Add(new MultiSuppAnaModel
+                    {
+                        id =            tender.TenderId.ToString(),
+                        cnbno=          tender.CnbNo.ToString(),
+                        networkname =   tender.MasErmNetworkModel_s.name,
+                        suppliername =  tender.MasErmSupplierModel_s.name,
+                        suppliertype =  (tender.MasErmTenderModel_s.supplytype != null ? tender.MasErmTenderModel_s.supplytype == "1" ? "HH" : tender.MasErmTenderModel_s.supplytype == "2" ? "NHH" : "Gas" : ""),
+                        statusdesc =    tender.TrnERMTenderStatus_s.StatusDesc,
+                        versionid =     "0",
+                        createdby =     tender.CreatedBy,
+                        createddate =   tender.CreatedDate.ToString(),
+                        analysisAvail = tender.VersionId.Length > 0 ? "Yes" : "No",
+                        button_desc =   (sid.Where(x => x == tender.TenderId.ToString()).Count() > 0) ? "Remove" : "Add"
+                    });
+                }
+                ViewBag.Tenders = msa;
+
+            }
+            else
+            {
+            }
+            TempData["username"] = ViewBag.Username;
+            TempData["supplyType"] = supplytype !=null ? supplytype : "HH";
+            ViewBag.SupplyType = TempData["supplyType"];
+            ViewBag.SuppTypeSelected = "selected";
+            ViewBag.ActionDisabled = "disabled";
+            return View();
         }
     }
 

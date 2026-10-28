@@ -9,5 +9,6 @@
         public string avail_charge { get; set; }
         public string standing_charge { get; set; }
         public string noof_months { get; set; }
+        public string category { get; set; }
     }
 }

@@ -3,7 +3,7 @@
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>C:\Users\Public\FixedPricingPortal\erm\ui\bin\app.publish\</_PublishTargetUrl>
-    <History>True|2026-10-19T13:51:32.6089890Z||;True|2026-10-18T10:09:21.1168537+01:00||;True|2026-10-17T13:47:40.5519916+01:00||;True|2026-10-17T13:15:40.8790985+01:00||;True|2026-10-17T12:48:39.2260436+01:00||;True|2026-10-16T16:55:24.6032038+01:00||;True|2026-10-16T16:42:46.8120137+01:00||;True|2026-10-16T16:42:25.9890175+01:00||;True|2026-10-16T16:35:01.1026065+01:00||;True|2026-10-16T16:22:08.1568790+01:00||;True|2026-10-16T16:21:37.9038878+01:00||;True|2026-10-16T16:14:30.5407812+01:00||;True|2026-10-16T16:14:05.6178123+01:00||;True|2026-10-16T15:10:32.8645659+01:00||;True|2026-10-10T15:24:51.7807615+01:00||;True|2026-10-09T15:19:53.8209358+01:00||;True|2026-10-08T15:32:29.6697420+01:00||;True|2026-10-08T14:10:04.4593992+01:00||;True|2026-10-08T13:58:29.8660627+01:00||;True|2026-10-08T13:40:14.3461418+01:00||;True|2026-10-08T11:56:23.1791137+01:00||;</History>
+    <History>True|2026-10-28T09:23:08.1581274Z||;True|2026-10-28T08:17:07.2082933+00:00||;True|2026-10-23T14:48:04.5941136+01:00||;True|2026-10-23T14:28:50.9570727+01:00||;True|2026-10-23T14:11:46.0459398+01:00||;True|2026-10-23T14:03:27.2807597+01:00||;True|2026-10-23T13:48:36.3145263+01:00||;True|2026-10-23T13:46:54.5983814+01:00||;True|2026-10-23T13:28:15.9884786+01:00||;True|2026-10-23T08:56:33.9956269+01:00||;True|2026-10-19T14:51:32.6089890+01:00||;True|2026-10-18T10:09:21.1168537+01:00||;True|2026-10-17T13:47:40.5519916+01:00||;True|2026-10-17T13:15:40.8790985+01:00||;True|2026-10-17T12:48:39.2260436+01:00||;True|2026-10-16T16:55:24.6032038+01:00||;True|2026-10-16T16:42:46.8120137+01:00||;True|2026-10-16T16:42:25.9890175+01:00||;True|2026-10-16T16:35:01.1026065+01:00||;True|2026-10-16T16:22:08.1568790+01:00||;True|2026-10-16T16:21:37.9038878+01:00||;True|2026-10-16T16:14:30.5407812+01:00||;True|2026-10-16T16:14:05.6178123+01:00||;True|2026-10-16T15:10:32.8645659+01:00||;True|2026-10-10T15:24:51.7807615+01:00||;True|2026-10-09T15:19:53.8209358+01:00||;True|2026-10-08T15:32:29.6697420+01:00||;True|2026-10-08T14:10:04.4593992+01:00||;True|2026-10-08T13:58:29.8660627+01:00||;True|2026-10-08T13:40:14.3461418+01:00||;True|2026-10-08T11:56:23.1791137+01:00||;</History>
     <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
@@ -56,10 +56,10 @@
       <publishTime>06/11/2026 12:37:18</publishTime>
     </File>
     <File Include="bin/fppErm.dll">
-      <publishTime>10/19/2026 14:43:58</publishTime>
+      <publishTime>10/28/2026 09:22:21</publishTime>
     </File>
     <File Include="bin/fppErm.pdb">
-      <publishTime>10/19/2026 14:43:58</publishTime>
+      <publishTime>10/28/2026 09:22:21</publishTime>
     </File>
     <File Include="bin/fr/Xceed.Wpf.AvalonDock.resources.dll">
       <publishTime>06/11/2026 12:37:18</publishTime>
@@ -620,13 +620,16 @@
       <publishTime>07/30/2026 11:52:18</publishTime>
     </File>
     <File Include="Views/Analysis/AnalysisPage.cshtml">
-      <publishTime>10/19/2026 13:53:48</publishTime>
+      <publishTime>10/23/2026 08:42:04</publishTime>
+    </File>
+    <File Include="Views/Analysis/MultiAnalysisPage.cshtml">
+      <publishTime>10/27/2026 16:42:12</publishTime>
     </File>
     <File Include="Views/Analysis/readXLSX.cshtml">
       <publishTime>10/13/2026 09:42:53</publishTime>
     </File>
     <File Include="Views/Complete/CompletePage.cshtml">
-      <publishTime>10/13/2026 11:24:46</publishTime>
+      <publishTime>10/23/2026 10:15:38</publishTime>
     </File>
     <File Include="Views/Home/About.cshtml">
       <publishTime>07/30/2026 11:52:10</publishTime>
@@ -635,7 +638,7 @@
       <publishTime>07/30/2026 11:52:10</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>10/14/2026 14:06:01</publishTime>
+      <publishTime>10/27/2026 14:39:22</publishTime>
     </File>
     <File Include="Views/Home/Login.cshtml">
       <publishTime>10/02/2026 11:57:46</publishTime>
@@ -644,16 +647,16 @@
       <publishTime>10/13/2026 12:03:49</publishTime>
     </File>
     <File Include="Views/Send/SendMail.cshtml">
-      <publishTime>10/08/2026 13:54:35</publishTime>
+      <publishTime>10/27/2026 15:23:28</publishTime>
     </File>
     <File Include="Views/Send/ViewSend.cshtml">
-      <publishTime>10/16/2026 08:31:55</publishTime>
+      <publishTime>10/27/2026 16:08:05</publishTime>
     </File>
     <File Include="Views/Shared/Error.cshtml">
       <publishTime>07/30/2026 11:52:10</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>10/09/2026 11:53:31</publishTime>
+      <publishTime>10/28/2026 08:15:48</publishTime>
     </File>
     <File Include="Views/Tenders/NewTender.cshtml">
       <publishTime>10/13/2026 11:45:29</publishTime>
@@ -665,7 +668,7 @@
       <publishTime>07/30/2026 11:52:10</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/19/2026 14:51:27</publishTime>
+      <publishTime>10/28/2026 09:23:04</publishTime>
     </File>
   </ItemGroup>
 </Project>
