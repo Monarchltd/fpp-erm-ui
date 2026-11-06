@@ -28,6 +28,22 @@ namespace fppErm.Controllers
 
         public ActionResult Index()
         {
+            string tender_id =          Request.QueryString["tender_id"] != null ? Request.QueryString["tender_id"].ToString() : "";
+            string deleteflag =         Request.QueryString["deleteflag"] != null ? Request.QueryString["deleteflag"].ToString() : "";
+            ViewBag.Username =          TempData["username"];
+            TempData["tenderId"] =      tender_id;
+
+            HttpClient client =         new HttpClient();
+            client.BaseAddress =        new Uri(_baseurl);
+
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            //Delete CNB.
+            if (deleteflag =="1")
+            {
+                HttpResponseMessage response1 = client.GetAsync("Tender/deleteTender?id=" + tender_id).Result;
+            }
+
             string searchclicked =      Request.QueryString["search"] != null ? Request.QueryString["search"] : "0";
 
             TempData["actClicked"] =    "false";
@@ -37,10 +53,6 @@ namespace fppErm.Controllers
 
             ViewBag.Username =          TempData["username"];
 
-            HttpClient client   =       new HttpClient();
-            client.BaseAddress  =       new Uri(_baseurl);
-
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             HttpResponseMessage response = searchclicked.Equals("0") ? client.GetAsync("Tender").Result :
                                                                        client.GetAsync("Tender/SearchTender?tenderid="+ searchvalue + "&cnbno=" + searchvalue).Result;

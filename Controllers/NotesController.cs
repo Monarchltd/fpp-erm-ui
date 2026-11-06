@@ -11,6 +11,7 @@ using System.Web.UI.WebControls;
 using System.Collections.Generic;
 using System.Text;
 using System.Net.Sockets;
+using Microsoft.Ajax.Utilities;
 
 namespace fppErm.Controllers
 {
@@ -31,15 +32,15 @@ namespace fppErm.Controllers
         [HttpPost]
         public ActionResult NotesPage()
         {
-            var tender_id =         Request.Form["tenderId"];
-            var notes_new =         Request.Form["notesNew"];
-            var notes_update =      Request.Form["notesUpdate"];
-            var notes_his =         Request.Form["notesHistory"];
-            var cnbno =             Request.Form["cnbNo"] != null ? Request.Form["cnbNo"] : "";
-
-
-            //TempData["notes"] =     "False";
-            TempData["TenderId"] =      tender_id;
+            var tender_id =             Request.Form["tenderId"] != null ? Request.Form["tenderId"].ToString().Trim().Length > 0 ? Request.Form["tenderId"] : Request.QueryString["tender_id"] : "0";
+            var notes_new =             Request.Form["notesNew"];
+            var notes_update =          Request.Form["notesUpdate"];
+            var notes_his =             Request.Form["notesHistory"];
+            var cnbno =                 Request.Form["cnbNo"] != null ? Request.Form["cnbNo"].ToString().Trim().Length > 0 ? Request.Form["cnbNo"] : Request.QueryString["cnbNo"] : "0";
+            
+            //TempData["notes"] =       "False";
+            TempData["tid"] =           tender_id != null ? tender_id : "";
+            TempData["TenderId"] =      tender_id != null ? tender_id : "";
             TempData["iconClicked"] =   "notes";
             TempData["CnbNo"] =         cnbno;
 
@@ -47,21 +48,20 @@ namespace fppErm.Controllers
             if (notes_update.Equals("true"))
             {
                 //TempData["notes"] = "False";
-                TempData["iconClicked"] = "none";
+                TempData["iconClicked"] =   "none";
                 TrnERMTenderNotes_1 model = new TrnERMTenderNotes_1();
+                model.id =                  0;
+                model.MasErmTender_id =     TempData["TenderId"] != null ? TempData["TenderId"].ToString().Trim().Length > 0 ? Convert.ToDouble(TempData["TenderId"].ToString()) : 0 : 0;
+                model.tenderref =           "";
+                model.notes =               notes_new.ToString();
+                model.cusr =                TempData["username"] != null ? TempData["username"].ToString() : "";
+                model.cdte =                DateTime.Now;
+                model.uusr =                "";
+                model.udte =                DateTime.MinValue;
+                model.isActive =            1;
 
-                model.id = 0;
-                model.MasErmTender_id = TempData["TenderId"] != null ? Convert.ToDouble(TempData["TenderId"].ToString()) : 0;
-                model.tenderref = "";
-                model.notes = notes_new.ToString();
-                model.cusr = TempData["username"] != null ? TempData["username"].ToString() : "";
-                model.cdte = DateTime.Now;
-                model.uusr = "";
-                model.udte = DateTime.MinValue;
-                model.isActive = 1;
 
-
-                JsonContent content = JsonContent.Create(model);
+                JsonContent content =   JsonContent.Create(model);
 
                 _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -69,9 +69,9 @@ namespace fppErm.Controllers
                 {
                     if (model.MasErmTender_id != 0)
                     {
-                        TempData["TenderId"] = 0;
-                        HttpResponseMessage response = _client.PostAsync("Notes/InsertNotes", content).Result;
-                        var res = response.Content.ReadFromJsonAsync<TrnERMTenderNotes_1>().Result;
+                        TempData["TenderId"] =          0;
+                        HttpResponseMessage response =  _client.PostAsync("Notes/InsertNotes", content).Result;
+                        var res =                       response.Content.ReadFromJsonAsync<TrnERMTenderNotes_1>().Result;
                     }
                 }
                 catch (Exception ex)
@@ -81,14 +81,13 @@ namespace fppErm.Controllers
             else
             {
                 //TempData["notes"] =             "True";
-                HttpResponseMessage response = _client.GetAsync("Notes/GetNotes?id=" + tender_id).Result;
-                var res = response.Content.ReadFromJsonAsync<IEnumerable<TrnERMTenderNotes_1>>().Result;
-
-                StringBuilder sb = new StringBuilder();
+                HttpResponseMessage response =  _client.GetAsync("Notes/GetNotes?id=" + tender_id).Result;
+                var res =                       response.Content.ReadFromJsonAsync<IEnumerable<TrnERMTenderNotes_1>>().Result;
+                StringBuilder sb =              new StringBuilder();
 
                 foreach (TrnERMTenderNotes_1 s in res)
                 {
-                    sb.AppendLine("-- " + s.cusr.ToString() + " @ " + s.cdte.ToString());
+                    sb.AppendLine("-- " + s.cusr.ToString() + " @ " + s.cdte.ToString().Substring(0, 16));
                     sb.AppendLine(s.notes.ToString().Trim());
                     sb.AppendLine(" ");
                 }
@@ -96,7 +95,7 @@ namespace fppErm.Controllers
                 TempData["History"] = sb.ToString();
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home", new { tender_id = tender_id});
         }
 
         [HttpGet]

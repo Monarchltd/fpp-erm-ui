@@ -90,13 +90,7 @@
                     <div class="row" style="background-color:aliceblue">
                         <h6><span> Analysis</span></h6>
                         <div class="col">
-                            <b>Upload client pricing file</b>
-                        </div>
-                        <div class="col">
-                            @*<b>24 Month Period</b>*@
-                        </div>
-                        <div class="col">
-                            @*<b>36 Month Period</b>*@
+                            <b>Upload client pricing file.</b><br />( Enter maximum upto 6 files or less, no duplicate files allowed. )
                         </div>
                     </div>
 
@@ -108,19 +102,30 @@
                             <div class="invalid-feedback">File upload, required !</div>
                         </div>
                         <div class="col">
-                            <button href="#" type="submit" class="btn btn-primary btn-sm">@ViewBag.Run</button>
-                            @*<label for="formFileSm" class="form-label">Client Pricing file</label>
-                <input class="form-control form-control-sm" id="formFileSm" name="monthfile24" type="file" text="@{ if (@ViewBag.NewTender != null)
-                    { @ViewBag.NewTender.uploadPage.uploadedFile;
-                    } }">
-                <div class="invalid-feedback">File upload, required !</div>*@
+                            <input class="form-control form-control-sm" id="formFileSm" name="monthfile13" type="file">
+                            <div class="invalid-feedback">File upload, required !</div>
                         </div>
                         <div class="col">
-                            @*<label for="formFileSm" class="form-label">Client Pricing file</label>
-                <input class="form-control form-control-sm" id="formFileSm" name="monthfile36" type="file" text="@{ if (@ViewBag.NewTender != null)
-                    { @ViewBag.NewTender.uploadPage.uploadedFile;
-                    } }">
-                <div class="invalid-feedback">File upload, required !</div>*@
+                            <input class="form-control form-control-sm" id="formFileSm" name="monthfile14" type="file">
+                            <div class="invalid-feedback">File upload, required !</div>
+                        </div>
+                        <div class="col">
+                            <input class="form-control form-control-sm" id="formFileSm" name="monthfile15" type="file">
+                            <div class="invalid-feedback">File upload, required !</div>
+                        </div>
+                        <div class="col">
+                            <input class="form-control form-control-sm" id="formFileSm" name="monthfile16" type="file">
+                            <div class="invalid-feedback">File upload, required !</div>
+                        </div>
+                        <div class="col">
+                            <input class="form-control form-control-sm" id="formFileSm" name="monthfile17" type="file">
+                            <div class="invalid-feedback">File upload, required !</div>
+                        </div>
+
+                        <div class="col">
+                            <button href="#" type="submit" class="btn btn-primary btn-sm">@ViewBag.Run</button>
+                        </div>
+                        <div class="col">
                         </div>
                     </div>
 
@@ -146,7 +151,7 @@
                         <h6><span> Price Loader</span></h6>
                         <div class="row">
                             <div class="col">
-                                <label>12 Months</label>
+                                <label style="font-variant-caps:all-small-caps">Less than 12 Months</label>
                                 <div class="tableFixHead" style="height: 300px; overflow-x: auto;">
                                     <table class="table-sm table-bordered table-striped mb-0 text-nowrap">
                                         <thead>
@@ -179,7 +184,7 @@
                                 </div>
                             </div>
                             <div class="col">
-                                <label>24 Months</label>
+                                <label style="font-variant-caps:all-small-caps">Greater than 12 and less than 24 Months</label>
                                 <div class="tableFixHead" style="height: 300px; overflow-x: auto;">
                                     <table class="table-sm table-bordered table-striped mb-0 text-nowrap">
                                         <thead>
@@ -213,7 +218,7 @@
                             </div>
 
                             <div class="col">
-                                <label>36 Months</label>
+                                <label style="font-variant-caps:all-small-caps">Greater than 24 Months</label>
                                 <div class="tableFixHead" style="height: 300px; overflow-x: auto;">
                                     <table class="table-sm table-bordered table-striped mb-0 text-nowrap">
                                         <thead>
@@ -253,6 +258,7 @@
                     @{
                         if (ViewBag.analyProc == true)
                         {
+                            <p>Note : Supply type categories will be grouped in Analysis document for the selected supplier. </p>
                             <button href="#" type="submit" class="btn btn-success btn-sm" formaction="@Url.Action("AnalysisPage", "Analysis", new {download="1"} )">
                                 Download Analysis Template
                             </button>

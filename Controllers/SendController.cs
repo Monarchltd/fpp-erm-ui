@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using System.Linq;
 using System.Windows.Documents;
 using System.Collections.Generic;
+using fppErm.Models;
 
 namespace fppErm.Controllers
 {
@@ -41,7 +42,7 @@ namespace fppErm.Controllers
             TempData["tenderId"] = tender_id;
 
             ViewBag.id = tender_id;
-
+            string supplier_name = "";
 
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -53,6 +54,12 @@ namespace fppErm.Controllers
                 ViewBag.nhhHeader =             nhh.nhhHeaders;
                 gas gas = new gas();
                 ViewBag.gasHeader =             gas.gasHeaders;
+
+                if (res != null)
+                {
+                    HttpResponseMessage response1 = _client.GetAsync("getTenderDetails/getSuppliername?id=" + res.ermTender.supplier).Result;
+                    supplier_name =          response1.Content.ReadFromJsonAsync<string>().Result;
+                }
 
                 if (res.ermTender.fueltype != null)
                 {
@@ -86,7 +93,22 @@ namespace fppErm.Controllers
                     default: break;
                 }
 
-                ViewBag.Result =                res;
+                res.ermTender.supplier = supplier_name;
+                List<ViewSendSupplierModel> supplist = new List<ViewSendSupplierModel>();
+
+                foreach (var supp in res.ermSuppliers)
+                {
+                    HttpResponseMessage response2 = _client.GetAsync("getTenderDetails/getSuppliername?id=" + supp.SupplierId).Result;
+                    supplist.Add(new ViewSendSupplierModel()
+                    {
+                        id = supp.SupplierId.ToString(),
+                        suppliername = response2.Content.ReadFromJsonAsync<string>().Result,
+                        InvitationToTender = supp.InvitationToTender,
+                        EmailIds = supp.EmailIds
+                    });
+                }
+                ViewBag.supplist = supplist;
+                ViewBag.Result =  res;
             }
             catch (Exception ex)
             {

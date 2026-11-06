@@ -325,6 +325,8 @@
     <Compile Include="Helpers\Enumerators.cs" />
     <Compile Include="Helpers\LoginValidation.cs" />
     <Compile Include="Models\Edf\edfModel.cs" />
+    <Compile Include="Models\ViewSendSupplierModel.cs" />
+    <Compile Include="Models\MultiAnalysisModel.cs" />
     <Compile Include="Models\MultiSuppAnaModel.cs" />
     <Compile Include="Models\ERMStatuses.cs" />
     <Compile Include="Models\MasErmNetworkModelNHH.cs" />

@@ -32,12 +32,13 @@ namespace fppErm.Controllers
         // GET: Status
         public ActionResult StatusPage()
         {
-            var tender_id =             Request.Form["tenderId"];
-            var cnbno =                 Request.Form["cnbNo"] != null ? Request.Form["cnbNo"] : "";
+            var tender_id =             Request.Form["tenderId"] != null ? Request.Form["tenderId"].ToString().Trim().Length > 0 ? Request.Form["tenderId"] : Request.QueryString["tender_id"] : "0";
+            var cnbno =                 Request.Form["cnbNo"] != null ? Request.Form["cnbNo"].ToString().Trim().Length > 0 ? Request.Form["cnbNo"] : Request.QueryString["cnbNo"] : "0";
             var status_update =         Request.Form["statusUpdate"];
             TempData["iconClicked"] =   "status";
             TempData["TenderId"] =      tender_id;
             TempData["CnbNo"] =         cnbno;
+
 
             var statusId =              Request.Form["statusId"];
 
@@ -69,9 +70,9 @@ namespace fppErm.Controllers
                 {
                     if (model.MasErmTender != 0)
                     {
-                        TempData["TenderId"] = 0;
-                        HttpResponseMessage response = _client.PostAsync("diTrnERMTenderStatus/InsertStatus", content).Result;
-                        var res = response.Content.ReadFromJsonAsync<TrnERMTenderStatus_1>().Result;
+                        TempData["TenderId"] =          0;
+                        HttpResponseMessage response =  _client.PostAsync("diTrnERMTenderStatus/InsertStatus", content).Result;
+                        var res =                       response.Content.ReadFromJsonAsync<TrnERMTenderStatus_1>().Result;
                     }
                 }
                 catch (Exception ex)
@@ -98,7 +99,7 @@ namespace fppErm.Controllers
 
 
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home", new { tender_id = tender_id });
         }
     }
 }

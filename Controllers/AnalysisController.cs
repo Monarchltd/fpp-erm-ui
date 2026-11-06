@@ -5,24 +5,22 @@ using DotNet8.WebApi.Factory.Model.sse;
 using fppErm.Helpers;
 using fppErm.Models;
 using Microsoft.Graph.Models;
+using Neo4j.Driver;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Reflection;
-using System.Security.Policy;
-using System.Text;
-using System.Text.Json;
+using System.Threading.Tasks;
 using System.Web;
+using System.Web.Http.Results;
 using System.Web.Mvc;
-using System.Windows.Controls;
-using Xceed.Wpf.Toolkit;
-using static System.Net.WebRequestMethods;
+using System.Web.UI.WebControls;
+using System.Windows.Shapes;
+using Path = System.IO.Path;
 
 
 
@@ -39,7 +37,12 @@ namespace fppErm.Controllers
         }
 
         [HttpPost]
-        public ActionResult AnalysisPage(HttpPostedFileBase monthfile12, HttpPostedFileBase monthfile24, HttpPostedFileBase monthfile36)
+        public async Task<ActionResult> AnalysisPage(HttpPostedFileBase monthfile12,
+            HttpPostedFileBase monthfile13,
+            HttpPostedFileBase monthfile14,
+            HttpPostedFileBase monthfile15,
+            HttpPostedFileBase monthfile16,
+            HttpPostedFileBase monthfile17)
         {
             ViewBag.analyProc = false;
             ViewBag.Run =       "Run";
@@ -49,20 +52,17 @@ namespace fppErm.Controllers
             var supplier =      Request.Form["supplier"] != null ? Request.Form["supplier"] : TempData["supplier"];
             var type =          Request.Form["type"] != null ? Request.Form["type"] : TempData["type"];
             var status_update = Request.Form["statusUpdate"];
+            var clientname =    Request.Form["clientName"] != null ? Request.Form["clientName"] : TempData["clientName"];
 
-            ViewBag.Username =  TempData["username"];
-            TempData["username"] = ViewBag.Username;
+            ViewBag.Username =          TempData["username"];
+            TempData["username"] =      ViewBag.Username;
             TempData["iconClicked"] =   "analysis";
-
             TempData["TenderId"] =      tender_id;
             TempData["CnbNo"] =         cnbno;
             TempData["supplier"] =      supplier;
             TempData["type"] =          type;
+            TempData["clientName"] =    clientname;
             ViewBag.Supplier =          supplier;
-
-            HttpClient client =     new HttpClient();
-            client.BaseAddress =    new Uri(_baseurl);
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             if (supplier.Equals("EDF Energy"))
             {
@@ -72,8 +72,161 @@ namespace fppErm.Controllers
                     ViewBag.Run = "Price Loader";
                 }
             }
-            
 
+            //Check for duplicates.
+            List<string> monFiles = new List<string>();
+            monFiles.Add(monthfile12 != null ? monthfile12.FileName : "monthfile12");
+            monFiles.Add(monthfile13 != null ? monthfile13.FileName : "monthfile13");
+            monFiles.Add(monthfile14 != null ? monthfile14.FileName : "monthfile14");
+            monFiles.Add(monthfile15 != null ? monthfile15.FileName : "monthfile15");
+            monFiles.Add(monthfile16 != null ? monthfile16.FileName : "monthfile16");
+            monFiles.Add(monthfile17 != null ? monthfile17.FileName : "monthfile17");
+
+            List<string> unique_monFiles = monFiles.Distinct().ToList();
+
+            if (monFiles.Count == unique_monFiles.Count)
+            {
+                //No Duplicates.
+
+                var uploadPath =    Server.MapPath("~/Analysis");
+                string filepath12 = "0";
+                string filepath13 = "0";
+                string filepath14 = "0";
+                string filepath15 = "0";
+                string filepath16 = "0";
+                string filepath17 = "0";
+
+                if (monthfile12 != null)
+                {
+                    filepath12 = Path.Combine(uploadPath, Path.GetFileName(monthfile12.FileName));
+                    monthfile12.SaveAs(filepath12);
+                }
+                if (monthfile13 != null)
+                {
+                    filepath13 = Path.Combine(uploadPath, Path.GetFileName(monthfile13.FileName));
+                    monthfile13.SaveAs(filepath13);
+                }
+                if (monthfile14 != null)
+                {
+                    filepath14 = Path.Combine(uploadPath, Path.GetFileName(monthfile14.FileName));
+                    monthfile14.SaveAs(filepath14);
+                }
+                if (monthfile15 != null)
+                {
+                    filepath15 = Path.Combine(uploadPath, Path.GetFileName(monthfile15.FileName));
+                    monthfile15.SaveAs(filepath15);
+                }
+                if (monthfile16 != null)
+                {
+                    filepath16 = Path.Combine(uploadPath, Path.GetFileName(monthfile16.FileName));
+                    monthfile16.SaveAs(filepath16);
+                }
+                if (monthfile17 != null)
+                {
+                    filepath17 = Path.Combine(uploadPath, Path.GetFileName(monthfile17.FileName));
+                    monthfile17.SaveAs(filepath17);
+                }
+
+                if (monthfile12 != null || monthfile13 != null || monthfile14 != null ||
+                    monthfile15 != null || monthfile16 != null || monthfile17 != null)
+                {
+                    if (supplier.Equals("EDF Energy"))
+                    {
+                        try
+                        {
+                            HttpResponseMessage response = await performProcess(filepath12, filepath13, filepath14, filepath15, filepath16, filepath17, tender_id.ToString(), type.ToString(), supplier.ToString());
+                            var res = response.Content.ReadFromJsonAsync<IEnumerable<sseSCModel>>().Result;
+
+                            if (res != null)
+                            {
+                                List<sseSCModel> res1 = new List<sseSCModel>();
+                                List<sseSCModel> res2 = new List<sseSCModel>();
+                                List<sseSCModel> res3 = new List<sseSCModel>();
+
+                                foreach (var results in res)
+                                {
+                                    if (Convert.ToInt32(results.noof_months) >= 0 && Convert.ToInt32(results.noof_months) <= 12)
+                                    {
+                                        res1.Add(results);
+                                    }
+                                    else if (Convert.ToInt32(results.noof_months) >= 13 && Convert.ToInt32(results.noof_months) <= 24)
+                                    {
+                                        res2.Add(results);
+                                    }
+                                    else if (Convert.ToInt32(results.noof_months) >= 25 && Convert.ToInt32(results.noof_months) <= 36)
+                                    {
+                                        res3.Add(results);
+                                    }
+                                }
+
+                                ViewBag.Result1 = res1;
+                                ViewBag.Result2 = res2;
+                                ViewBag.Result3 = res3;
+
+                                if (res1.Count > 0 || res2.Count > 0 || res3.Count > 0)
+                                    ViewBag.analyProc = true;
+                            }
+                        }
+                        catch(TaskCanceledException ex)
+                        {
+
+                        }
+                    }
+
+                    if (supplier.Equals("SSE"))
+                    {
+                        try
+                        {
+                            HttpResponseMessage response = await performProcessSSE(filepath12, filepath13, filepath14, filepath15, filepath16, filepath17, tender_id.ToString(), type.ToString(), supplier.ToString());
+
+                            var res = response.Content.ReadFromJsonAsync<IEnumerable<sseSCModel>>().Result;
+
+                            if (res != null)
+                            {
+                                List<sseSCModel> res1 = new List<sseSCModel>();
+                                List<sseSCModel> res2 = new List<sseSCModel>();
+                                List<sseSCModel> res3 = new List<sseSCModel>();
+
+                                foreach (var results in res)
+                                {
+                                    if (Convert.ToInt32(results.noof_months) >= 0 && Convert.ToInt32(results.noof_months) <= 12)
+                                    {
+                                        res1.Add(results);
+                                    }
+                                    else if (Convert.ToInt32(results.noof_months) >= 13 && Convert.ToInt32(results.noof_months) <= 24)
+                                    {
+                                        res2.Add(results);
+                                    }
+                                    else if (Convert.ToInt32(results.noof_months) >= 25 && Convert.ToInt32(results.noof_months) <= 36)
+                                    {
+                                        res3.Add(results);
+                                    }
+
+                                }
+
+                                ViewBag.Result1 = res1;
+                                ViewBag.Result2 = res2;
+                                ViewBag.Result3 = res3;
+
+                                if (res1.Count > 0 || res2.Count > 0 || res3.Count > 0)
+                                    ViewBag.analyProc = true;
+                            }
+                        }
+                        catch(TaskCanceledException ex)
+                        {
+
+                        }
+
+                    }
+                }
+            }
+            else
+            {
+                //Duplicate files found in upload.
+                ViewBag.Message = " ** Trying to upload, dupilcates files.";
+            }
+
+            /*
             if (monthfile12 != null)
             {
                 var uploadPath = Server.MapPath("~/Analysis");
@@ -159,12 +312,14 @@ namespace fppErm.Controllers
 
                 }
             }
-
+            
+            */
+            
             if (dwnFlag=="1")
             {
                 try
                 {
-                    return Download(tender_id.ToString(), cnbno.ToString(), supplier.ToString(), type.ToString());
+                    return Download(tender_id.ToString(), cnbno.ToString(), supplier.ToString(), type.ToString(), clientname.ToString());
                 }
                 catch(Exception ex)
                 {
@@ -544,10 +699,10 @@ namespace fppErm.Controllers
         }
 
         [HttpPost]
-        public ActionResult Download(string tender_id, string cnbno, string supplier, string type)
+        public ActionResult Download(string tender_id, string cnbno, string supplier, string type, string clientname)
         {
             string sourcefilename = String.Empty;
-            string destfilename =   tender_id + "_" + cnbno + "_" + supplier + "_" + type + ".xlsx";
+            string destfilename =   clientname + "-MON-" + cnbno.ToLower().Replace("mon-", "") + ".xlsx";
 
             if (type=="HH" || type=="NHH")
             {
@@ -573,16 +728,27 @@ namespace fppErm.Controllers
             string suppid =         Request.QueryString["suppId"];
             string suppIdremove =   Request.QueryString["suppIdremove"];
             string searchclick =    Request.QueryString["searchclick"];
+            string runreport =      Request.QueryString["runreport"];
             string supplytype =     Request.Form["supplytype"];
-
             var tmpSid =            (List<string>)TempData["suppid"];
 
-            if (searchclick == "1")
+            HttpClient client =  new HttpClient();
+            client.BaseAddress = new Uri(_baseurl);
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+
+            int stype = supplytype != null ? supplytype == "HH" ? 1 : supplytype == "NHH" ? 2 : 3 : 1;
+
+            if (searchclick != null)
             {
-                tmpSid.Clear();
+                if (searchclick == "1")
+                {
+                    if (tmpSid != null)
+                        tmpSid.Clear();
+                }
             }
 
-            List<string> sid =      new List<string>();
+            List<string> sid = new List<string>();
 
             if (tmpSid != null && suppid != null)
             {
@@ -601,21 +767,26 @@ namespace fppErm.Controllers
 
                 sid.Remove(suppIdremove);
             }
-            
-            TempData["suppid"] =    sid;
 
-            ViewBag.Username =      TempData["username"];
+            if (runreport == "1")
+            {
+                List<MultiAnalysisModel> multiAnalyses = new List<MultiAnalysisModel>();
 
-            HttpClient client =     new HttpClient();
-            client.BaseAddress =    new Uri(_baseurl);
+                foreach (string s in tmpSid)
+                {
+                    multiAnalyses.Add(new MultiAnalysisModel { tenderid = s });
+                }
 
-            int stype = supplytype != null ? supplytype == "HH" ? 1 : supplytype == "NHH" ? 2 : 3 : 1;
+                JsonContent content =           JsonContent.Create(multiAnalyses);
+                HttpResponseMessage response1 = client.PostAsync("analysis/multiAnalysis", content).Result;
+                //HttpResponseMessage response1 = await performMultiAnalysis(content);
+                ViewBag.analyProc = true;
+            }
 
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            HttpResponseMessage response = client.GetAsync("Tender/SearchTenderwithEnergytype?type=" + stype).Result;
-
-            ViewBag.Tenders = null;
+            TempData["suppid"] =            sid;
+            ViewBag.Username =              TempData["username"];
+            HttpResponseMessage response =  client.GetAsync("Tender/SearchTenderwithEnergytype?type=" + stype).Result;
+            ViewBag.Tenders =               null;
 
             if (response.IsSuccessStatusCode)
             {
@@ -637,7 +808,7 @@ namespace fppErm.Controllers
                         versionid =     "0",
                         createdby =     tender.CreatedBy,
                         createddate =   tender.CreatedDate.ToString(),
-                        analysisAvail = tender.VersionId.Length > 0 ? "Yes" : "No",
+                        analysisAvail = tender.VersionId.Length > 0 ? Convert.ToInt32(tender.VersionId.Trim()) > 0 ? "Yes" : "No" : "No",
                         button_desc =   (sid.Where(x => x == tender.TenderId.ToString()).Count() > 0) ? "Remove" : "Add"
                     });
                 }
@@ -647,13 +818,95 @@ namespace fppErm.Controllers
             else
             {
             }
-            TempData["username"] = ViewBag.Username;
-            TempData["supplyType"] = supplytype !=null ? supplytype : "HH";
-            ViewBag.SupplyType = TempData["supplyType"];
-            ViewBag.SuppTypeSelected = "selected";
-            ViewBag.ActionDisabled = "disabled";
+
+            TempData["username"] =      ViewBag.Username;
+            TempData["supplyType"] =    supplytype !=null ? supplytype : "HH";
+            ViewBag.SupplyType =        TempData["supplyType"];
+            ViewBag.SuppTypeSelected =  "selected";
+            ViewBag.ActionDisabled =    "disabled";
             return View();
         }
+
+        private async Task<HttpResponseMessage> performProcess(string filepath12,
+            string filepath13,
+            string filepath14,
+            string filepath15,
+            string filepath16,
+            string filepath17,
+            string tender_id,
+            string type,
+            string supplier)
+        {
+            return await Task.Run(() =>
+            {
+                HttpClient client = new HttpClient();
+                client.BaseAddress = new Uri(_baseurl);
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                // Simulating an operation that requires intensive CPU processing
+                int result = 0;
+                HttpResponseMessage response = client.GetAsync("analysis\\readDatav1?filepath1=" + filepath12 +
+                    "&filepath2=" + filepath13 +
+                    "&filepath3=" + filepath14 +
+                    "&filepath4=" + filepath15 +
+                    "&filepath5=" + filepath16 +
+                    "&filepath6=" + filepath17 +
+                    "&tenderid=" + tender_id + "&type=" + type + "&supplier=" + supplier).Result;
+
+                //var res = response.Content.ReadFromJsonAsync<IEnumerable<sseSCModel>>().Result;
+
+                return response;
+            });
+        }
+
+
+        private async Task<HttpResponseMessage> performProcessSSE(string filepath12,
+                                                                  string filepath13,
+                                                                  string filepath14,
+                                                                  string filepath15,
+                                                                  string filepath16,
+                                                                  string filepath17,
+                                                                  string tender_id,
+                                                                  string type,
+                                                                  string supplier)
+        {
+            return await Task.Run(() =>
+            {
+                HttpClient client =     new HttpClient();
+                client.BaseAddress =    new Uri(_baseurl);
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                // Simulating an operation that requires intensive CPU processing
+                int result = 0;
+                HttpResponseMessage response = client.GetAsync("analysis\\readDatav1?filepath1=" + filepath12 +
+                    "&filepath2=" + filepath13 +
+                    "&filepath3=" + filepath14 +
+                    "&filepath4=" + filepath15 +
+                    "&filepath5=" + filepath16 +
+                    "&filepath6=" + filepath17 +
+                    "&tenderid=" + tender_id + "&type=" + type + "&supplier=" + supplier).Result;
+
+                return response;
+            });
+        }
+
+
+        private async Task<HttpResponseMessage> performMultiAnalysis(JsonContent content)
+        {
+            return await Task.Run(() =>
+            {
+                HttpClient client =     new HttpClient();
+                client.BaseAddress =    new Uri(_baseurl);
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                // Simulating an operation that requires intensive CPU processing
+                int result = 0;
+                var response = client.PostAsync("analysis/multiAnalysis", content).Result;
+
+                return response;
+            });
+        }
+
     }
 
 }

@@ -246,13 +246,13 @@
                     <br />
                     <div class="row">
                         @{
-                            foreach (var itm in @ViewBag.Result.ermSuppliers)
+                            foreach (var itm in @ViewBag.supplist)
                             {
                                 <h6><span>Supplier Details</span></h6>
                                 <div class="col">
                                     Supplier
                                     <div>
-                                        <label style="color:blue">@itm.SupplierId</label>
+                                        <label style="color:blue">@itm.suppliername</label>
                                     </div>
                                 </div>
                                 <div class="col">
