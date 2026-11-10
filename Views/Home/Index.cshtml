@@ -63,7 +63,7 @@
 
 <form method="post">
 
-    <input type="hidden" name="tenderId" value="@TempData["tenderId"]"/>
+    <input type="hidden" name="tenderId" value="@TempData["tenderId"]" />
     <input type="hidden" name="clientName" />
     <input type="hidden" name="cnbNo" />
     <input type="hidden" name="supplier" />
@@ -71,6 +71,7 @@
 
     <input type="hidden" name="notesUpdate" value="false" />
     <input type="hidden" name="statusUpdate" value="false" />
+    <input type="hidden" name="deleteUpdate" value="false" />
 
     <main>
 
@@ -178,7 +179,7 @@
                                             <button type="submit" title="View" class="btn btn-transparent btn-sm" formaction="@Url.Action("ViewSend", "Send")" onclick="submitView(@item.id, '@item.CnbNo', '@item.MasErmSupplierModel_s.name', '@item.MasErmTenderModel_s.supplytype', '@item.MasErmNetworkModel_s.name');"><span class="bi bi-eye-fill"></span></button>
                                             @*<button data-toggle="tooltip" class="btn btn-transparent btn-sm"><span class="bi bi-vector-pen"></span></button>*@
                                             &nbsp;
-                                            <button title="Delete" class="btn btn-danger btn-sm" formaction="@Url.Action("Index", "Home", new { deleteflag="1", tender_id=@item.id})"><span class="bi bi-trash-fill"></span></button>
+                                            <button type="submit" title="Delete" class="btn btn-danger btn-sm" formaction="@Url.Action("DeletePage", "Delete", new { deleteflag="1", tender_id=@item.id})" onclick="statusDialog(@item.id, '@item.CnbNo');"><span class="bi bi-trash-fill"></span></button>
                                         </div>
                                     </td>
                                 </tr>
@@ -256,6 +257,28 @@
                     </div>
                 </div>
 
+                <!--DELETE CONFIMATION-->
+                <div class="modal fade" id="deleteModal" role="dialog" aria-labelledby="delete" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title alert-heading" id="delete">Delete Confirmation</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <p>Are you sure to delete the tender ?</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-sm btn-secondary" onclick="dismissDeleteModal()">Cancel</button>
+                                <button type="submit" class="btn btn-sm btn-primary" formaction="@Url.Action("Index", "Home", new { deleteConfirmflag=@ViewBag.delFlag, tender_id=@ViewBag.tid})">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </main>
@@ -275,6 +298,9 @@
     if (state == "status")
         $(window).on('load', function () { $('#statusModal').modal('show'); });
 
+    if (state == "delete")
+        $(window).on('load', function () { $('#deleteModal').modal('show'); });
+
     function notesDialog(tender_id, cnbno) {
         document.getElementsByName("tenderId")[0].value = tender_id;
         document.getElementsByName("cnbNo")[0].value = cnbno;
@@ -291,6 +317,10 @@
 
     function addStatus() {
         document.getElementsByName("statusUpdate")[0].value = "true";
+    }
+
+    function addDelete() {
+        document.getElementsByName("deleteUpdate")[0].value = "true";
     }
 
     function dismissModal()
@@ -317,4 +347,9 @@
         document.getElementsByName("type")[0].value = type;
 
     }
+
+    function dismissDeleteModal() {
+        $('#deleteModal').modal('hide');
+    }
+
 </script>

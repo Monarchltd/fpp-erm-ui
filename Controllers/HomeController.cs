@@ -30,6 +30,8 @@ namespace fppErm.Controllers
         {
             string tender_id =          Request.QueryString["tender_id"] != null ? Request.QueryString["tender_id"].ToString() : "";
             string deleteflag =         Request.QueryString["deleteflag"] != null ? Request.QueryString["deleteflag"].ToString() : "";
+            string deleteConfirmflag=   Request.QueryString["deleteConfirmflag"] != null ? Request.QueryString["deleteConfirmflag"].ToString() : "";
+
             ViewBag.Username =          TempData["username"];
             TempData["tenderId"] =      tender_id;
 
@@ -37,11 +39,30 @@ namespace fppErm.Controllers
             client.BaseAddress =        new Uri(_baseurl);
 
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            ViewBag.delModal =          false;
 
             //Delete CNB.
             if (deleteflag =="1")
             {
-                HttpResponseMessage response1 = client.GetAsync("Tender/deleteTender?id=" + tender_id).Result;
+                ViewBag.tid =       tender_id;
+                ViewBag.delFlag =   deleteflag;
+                ViewBag.delModal =  true;
+                //HttpResponseMessage response1 = client.GetAsync("Tender/deleteTender?id=" + tender_id).Result;
+            }
+
+            if (deleteConfirmflag == "1")
+            {
+                if (tender_id != null)
+                {
+                    if (tender_id.Trim().Length > 0)
+                    {
+                        HttpResponseMessage response1 = client.GetAsync("Tender/deleteTender?id=" + tender_id).Result;
+                        TempData["iconClicked"] = "None";
+                        ViewBag.tid = null;
+                        ViewBag.delFlag = null;
+                        ViewBag.delModal = false;
+                    }
+                }
             }
 
             string searchclicked =      Request.QueryString["search"] != null ? Request.QueryString["search"] : "0";

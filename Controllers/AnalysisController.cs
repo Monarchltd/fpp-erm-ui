@@ -778,8 +778,15 @@ namespace fppErm.Controllers
                 }
 
                 JsonContent content =           JsonContent.Create(multiAnalyses);
-                HttpResponseMessage response1 = client.PostAsync("analysis/multiAnalysis", content).Result;
-                //HttpResponseMessage response1 = await performMultiAnalysis(content);
+
+                if (stype == 1 || stype == 2)
+                {
+                    HttpResponseMessage response1 = client.PostAsync("analysis/multiAnalysisElec", content).Result;
+                }
+                else if (stype == 3)
+                {
+                    HttpResponseMessage response1 = client.PostAsync("analysis/multiAnalysisGas", content).Result;
+                }
                 ViewBag.analyProc = true;
             }
 
@@ -813,7 +820,6 @@ namespace fppErm.Controllers
                     });
                 }
                 ViewBag.Tenders = msa;
-
             }
             else
             {
